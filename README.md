@@ -30,3 +30,6 @@ It's Vue using a shitty ElementUI as UI framework. I tried to cut some corners b
 - - Figure out the retarded routing so editing/creating features for entities have proper route. For example, editing Game would go to /games/edit not /editGame
 
 I know this is random but over time we'll figure out some good documentation if we continue developing this. 
+
+**UPDATE** I drew a diagram of the overall architecture. This Repo concerns itself with the left part.
+![alt text](chesscombo.jpg "Chess Combo Architecture")
