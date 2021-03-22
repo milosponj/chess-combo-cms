@@ -20,6 +20,17 @@ namespace ChessComboCMS.Controllers
 
 
         [HttpGet]
+        [Route("mintReady")]
+        public async Task<ActionResult<IEnumerable<MintReadyCombinationItem>>> GetMintReadyCombinations()
+        {
+            // Combo NFTs are minted from combinations (difference between the two is like a difference between a physical car and a blueprint of a car)
+            // Combo NFT is a physical car, something that phyisically exists on blockchain and it's unchangeable
+            // Combination is just a blueprint used for creating (= minting) Combos
+            var mintReadyCombinations = await _combinationsService.GetMintReadyCombinationsAsync();
+            return Ok(mintReadyCombinations);
+        }
+
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<CombinationListItemResponse>>> GetCombinations()
         {
             return Ok(await _combinationsService.GetAllAsync());

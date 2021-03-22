@@ -12,5 +12,6 @@ namespace ChessComboCMS.Services
         Task<List<CombinationListItemResponse>> GetAllAsync();
         Task<Combination> GetAsync(int id);
         Task<bool> CombinationExistsAsync(int id);
+        Task<List<MintReadyCombinationItem>> GetMintReadyCombinationsAsync();
     }
 }
