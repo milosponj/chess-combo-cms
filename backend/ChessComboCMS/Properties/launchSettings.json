@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "ChessComboAdminCMS": {
+    "ChessComboCMS": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

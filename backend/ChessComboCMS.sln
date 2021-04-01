@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessComboCMS", "ChessComboAdminCMS\ChessComboCMS.csproj", "{6C63AEB9-0939-4AB8-B418-76FC51EA964D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessComboCMS", "ChessComboCMS\ChessComboCMS.csproj", "{6C63AEB9-0939-4AB8-B418-76FC51EA964D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,45 +2,49 @@
 using System;
 using System.Collections.Generic;
 using ChessComboCMS.Data;
+using ChessComboCMS.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ChessComboCMS.Migrations
 {
     [DbContext(typeof(ChessComboCMSContext))]
-    [Migration("20210314103646_rename_movesets_to_combinations")]
-    partial class rename_movesets_to_combinations
+    partial class ChessComboCMSContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.3")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                .HasAnnotation("ProductVersion", "3.1.13")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("ChessComboCMS.Domain.Combinations", b =>
+            modelBuilder.Entity("ChessComboCMS.Domain.Combination", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<int>("GameId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("IsWhite")
-                        .HasColumnType("boolean");
+                    b.Property<List<Move>>("Moves")
+                        .HasColumnType("jsonb");
 
-                    b.Property<List<string>>("MoveFens")
-                        .HasColumnType("text[]");
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GameId");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("Combinations");
                 });
@@ -58,8 +62,8 @@ namespace ChessComboCMS.Migrations
                     b.Property<DateTimeOffset>("Date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsWhite")
-                        .HasColumnType("boolean");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
                     b.Property<string>("PGN")
                         .HasColumnType("text");
@@ -97,7 +101,7 @@ namespace ChessComboCMS.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("ChessComboCMS.Domain.Combinations", b =>
+            modelBuilder.Entity("ChessComboCMS.Domain.Combination", b =>
                 {
                     b.HasOne("ChessComboCMS.Domain.Game", "Game")
                         .WithMany()
@@ -105,7 +109,11 @@ namespace ChessComboCMS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Game");
+                    b.HasOne("ChessComboCMS.Domain.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ChessComboCMS.Domain.Game", b =>
@@ -117,10 +125,6 @@ namespace ChessComboCMS.Migrations
                     b.HasOne("ChessComboCMS.Domain.Player", "WhitePlayer")
                         .WithMany()
                         .HasForeignKey("WhitePlayerId");
-
-                    b.Navigation("BlackPlayer");
-
-                    b.Navigation("WhitePlayer");
                 });
 #pragma warning restore 612, 618
         }
