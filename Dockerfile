@@ -9,7 +9,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["/backend/ChessComboCMS/ChessComboCMS.csproj", "ChessComboCMS/"]
 RUN dotnet restore "ChessComboCMS/ChessComboCMS.csproj"
-COPY /backend/ChessComboCMS .
+COPY /backend .
 WORKDIR "/src/ChessComboCMS"
 RUN dotnet build "ChessComboCMS.csproj" -c Release -o /app/build
 
