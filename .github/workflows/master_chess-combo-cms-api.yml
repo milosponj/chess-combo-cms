@@ -22,8 +22,8 @@ jobs:
     - uses: azure/docker-login@v1
       with:
         login-server: https://index.docker.io/v1/
-        username: ${{ secrets.AzureAppService_ContainerUsername_322ece565f474a44a1076de474b7f0b0 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_a317afe48b7e4fca83511ffb129f491c }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_5df56fe2e9744cb8a497181705382ec7 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_ea0f99dfe03e4186ab077a81235b5e88 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2.2.1
@@ -46,5 +46,5 @@ jobs:
       with:
         app-name: 'chess-combo-cms-api'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_bc587a9f77d64db1b4a8df0f4f973f3b }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_322ece565f474a44a1076de474b7f0b0 }}/milosponj/chess-combo-cms:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_f6642900aab94505a3833650d2887f21 }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_5df56fe2e9744cb8a497181705382ec7 }}/milosponj/chess-combo-cms:${{ github.sha }}'
