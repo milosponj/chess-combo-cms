@@ -28,6 +28,9 @@ It's Vue using a shitty ElementUI as UI framework. I tried to cut some corners b
 - - Provide edit & delete feature for all three main entities (Players, Combinations and Games)
 - - Plug in the login logic with the proper token you now get from backend
 - - Figure out the retarded routing so editing/creating features for entities have proper route. For example, editing Game would go to /games/edit not /editGame
+- - Add Category dropdown for creating Combination (Initial values can be hardcoded: QueenSacrifice, Endgame, Fork, Attack, Checkmate, Blunder, Opening)
+- - Add Birthplace input field for creating a Player (free input field for now of player's Nation)
+
 
 I know this is random but over time we'll figure out some good documentation if we continue developing this. 
 
