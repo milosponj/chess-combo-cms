@@ -33,4 +33,4 @@ I know this is random but over time we'll figure out some good documentation if 
 ![alt text](chesscombo.jpg "Chess Combo Architecture")
 
 **UPDATE**
-API available on https://chess-combo-cms-api.azurewebsites.net/swagger/index.html so you don't have to run it locally.
+API available on https://combo-cms-api.azurewebsites.net/swagger/index.html so you don't have to run it locally.
