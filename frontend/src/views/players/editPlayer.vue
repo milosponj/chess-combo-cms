@@ -18,7 +18,15 @@
             type="date"
             placeholder="Pick a date"
             style="width: 100%"
+            format="dd-MMM-yyyy"
           />
+        </el-col>
+      </el-form-item>
+      <el-form-item label="Place of Birth">
+        <el-col :span="11">
+          <el-input
+          v-model="form.placeOfBirth"
+        />
         </el-col>
       </el-form-item>
       <el-form-item>
@@ -38,7 +46,7 @@ export default {
       form: {
         firstName: '',
         lastName: '',
-        dateOfBirth: ''
+        dateOfBirth: null
       },
       rules: {
         pgn: [
@@ -56,12 +64,13 @@ export default {
       chess: null
     }
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     onSubmit() {
-      createPlayer(this.form).then((response) => {
+      createPlayer(this.form).then(response => {
+        if (this.form.dateOfBirth.length === 0) {
+          this.form.dateOfBirth = null
+        }
         this.$router.push('/content/players')
       })
     },

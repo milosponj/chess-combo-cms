@@ -5,15 +5,17 @@ using ChessComboCMS.Data;
 using ChessComboCMS.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ChessComboCMS.Migrations
 {
     [DbContext(typeof(ChessComboCMSContext))]
-    partial class ChessComboCMSContextModelSnapshot : ModelSnapshot
+    [Migration("20210620065829_add_game_title_and_venue")]
+    partial class add_game_title_and_venue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,9 +64,6 @@ namespace ChessComboCMS.Migrations
                     b.Property<int?>("BlackPlayerId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ChessBaseUrl")
-                        .HasColumnType("text");
-
                     b.Property<DateTimeOffset?>("Date")
                         .HasColumnType("timestamp with time zone");
 
@@ -99,7 +98,7 @@ namespace ChessComboCMS.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset?>("DateOfBirth")
+                    b.Property<DateTimeOffset>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FirstName")

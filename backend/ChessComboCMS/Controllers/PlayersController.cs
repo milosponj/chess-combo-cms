@@ -82,6 +82,7 @@ namespace ChessComboCMS.Controllers
         {
             player.FirstName = player.FirstName.Trim();
             player.LastName = player.LastName.Trim();
+            player.PlaceOfBirth = player.PlaceOfBirth?.Trim();
             _context.Players.Add(player);
             await _context.SaveChangesAsync();
 

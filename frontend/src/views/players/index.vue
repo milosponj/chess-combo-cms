@@ -28,10 +28,16 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
+      <el-table-column align="center" prop="created_at" label="Birthdate" width="180">
         <template slot-scope="scope">
           <i class="el-icon-time" />
-          <span>{{ (new Date(scope.row.dateOfBirth)).toDateString("mmmm dS, yyyy") }}</span>
+          <span v-if="scope.row.dateOfBirth">{{ (new Date(scope.row.dateOfBirth)).toDateString("mm dd, yyyy").split(' ').slice(1).join(' ') }}</span>
+          <span v-else>Unknown</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Birthplace">
+        <template slot-scope="scope">
+          {{ scope.row.placeOfBirth }}
         </template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="Actions" width="100">
@@ -69,7 +75,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getPlayersList().then((response) => {
+      getPlayersList().then(response => {
         this.list = response
         this.listLoading = false
       })

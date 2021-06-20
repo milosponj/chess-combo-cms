@@ -14,5 +14,6 @@ namespace ChessComboCMS.Domain
         [Column(TypeName = "jsonb")]
         public List<Move> Moves { get; set; }
         public string Description { get; set; }
+        public string Category { get; set; }
     }
 }

@@ -8,8 +8,14 @@
           type="textarea"
         />
       </el-form-item>
+      <el-form-item label="Game Title" prop="title">
+        <el-input v-model="form.title" />
+      </el-form-item>
       <el-form-item label="Description" prop="description">
         <el-input v-model="form.description" />
+      </el-form-item>
+      <el-form-item label="Game URL" prop="url">
+        <el-input v-model="form.chessBaseUrl" />
       </el-form-item>
       <el-form-item label="Game date">
         <el-col :span="11">
@@ -93,7 +99,10 @@ export default {
         ],
         whitePlayerId: [{ validator: this.validateId }],
         blackPlayerId: [{ validator: this.validateId }],
-        description: [{ required: true }]
+        description: [{ required: true }],
+        title: [{ required: true }],
+        whitePlayerId: [{ required: true }],
+        blackPlayerId: [{ required: true }]
       },
       chess: null
     }
@@ -128,9 +137,9 @@ export default {
       }
     },
     async createGame() {
-      this.$refs['form'].validate((valid) => {
+      this.$refs['form'].validate(valid => {
         if (valid) {
-          createGame(this.form).then((response) => {
+          createGame(this.form).then(response => {
             this.$router.push('/content/games')
           })
         } else {
@@ -139,10 +148,10 @@ export default {
       })
     },
     async updateGame() {
-      this.$refs['form'].validate((valid) => {
+      this.$refs['form'].validate(valid => {
         if (valid) {
           console.log('updating')
-          updateGame(this.form).then((response) => {
+          updateGame(this.form).then(response => {
             this.$router.push('/content/games')
           })
         } else {

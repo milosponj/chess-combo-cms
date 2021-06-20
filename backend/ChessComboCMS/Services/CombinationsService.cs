@@ -50,7 +50,7 @@ namespace ChessComboCMS.Services
                 BlackPlayerName = c.Game.BlackPlayer?.FullName,
                 OwnerPlayerName = c.Player?.FullName,
                 Description = c.Description,
-                GameDate = c.Game.Date.ToString("dd. MMMM yyyy"),
+                GameDate = c.Game.Date.HasValue ? c.Game.Date.Value.ToString("dd. MMMM yyyy") : "",
                 NumberOfMoves = c.Moves.Count(),
                 Id = c.Id
             }).ToList();
@@ -73,12 +73,12 @@ namespace ChessComboCMS.Services
             {
                 var r = new MintReadyCombinationItem()
                 {
-                    BirthDate = combination.Player.DateOfBirth.ToOurString(),
-                    BirthPlace = "TO DO",
+                    BirthDate = combination.Player.DateOfBirth.HasValue ? combination.Player.DateOfBirth.Value.ToOurString() : "",
+                    BirthPlace = combination.Player.PlaceOfBirth,
                     BlackPlayerFullName = combination.Game.BlackPlayer.FullName,
                     WhitePlayerFullName = combination.Game.WhitePlayer.FullName,
-                    Category = "TO DO",
-                    Date = combination.Game.Date.ToOurString(),
+                    Category = combination.Category,
+                    Date = combination.Game.Date.HasValue ? combination.Game.Date.Value.ToOurString() : "",
                     Description = combination.Description,
                     GameDescription = combination.Game.Description,
                     Moves = JsonConvert.SerializeObject(combination.Moves.Select(m=>m.Fen)),

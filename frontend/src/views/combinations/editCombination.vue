@@ -52,14 +52,12 @@
               <el-col>
                 <el-row type="flex" justify="center">
                   <el-button-group>
-                    <el-button
-                      type="primary"
-                      @click="traverseRow(false)"
-                    >&lt;</el-button>
-                    <el-button
-                      type="primary"
-                      @click="traverseRow(true)"
-                    >&GT;</el-button>
+                    <el-button type="primary" @click="traverseRow(false)"
+                      >&lt;</el-button
+                    >
+                    <el-button type="primary" @click="traverseRow(true)"
+                      >&GT;</el-button
+                    >
                   </el-button-group>
                 </el-row>
                 <el-row>
@@ -107,20 +105,37 @@
                     type="textarea"
                   />
                 </el-row>
+                <el-row>
+                  <el-select
+                    v-model="form.category"
+                    placeholder="Select Category"
+                  >
+                    <el-option
+                      v-for="item in categories"
+                      :key="item"
+                      :label="item"
+                      :value="item"
+                    />
+                  </el-select>
+                </el-row>
                 <el-row v-if="game">
                   <label> Combination owner </label>
                   <el-radio-group v-model="form.playerId">
                     <el-radio :label="game.whitePlayer.id" border>
-                      {{ game.whitePlayer.firstName +
-                        ' ' +
-                        game.whitePlayer.lastName +
-                        ' (white)' }}
+                      {{
+                        game.whitePlayer.firstName +
+                          " " +
+                          game.whitePlayer.lastName +
+                          " (white)"
+                      }}
                     </el-radio>
                     <el-radio :label="game.blackPlayer.id" border>
-                      {{ game.blackPlayer.firstName +
-                        ' ' +
-                        game.blackPlayer.lastName +
-                        ' (black)' }}
+                      {{
+                        game.blackPlayer.firstName +
+                          " " +
+                          game.blackPlayer.lastName +
+                          " (black)"
+                      }}
                     </el-radio>
                   </el-radio-group>
                 </el-row>
@@ -134,16 +149,12 @@
       </el-row>
       <el-row>
         <el-form-item>
-          <el-button
-            v-if="!form.id"
-            type="primary"
-            @click="onSubmit"
-          >Create Combination</el-button>
-          <el-button
-            v-else
-            type="primary"
-            @click="updateCombination"
-          >Update Combination</el-button>
+          <el-button v-if="!form.id" type="primary" @click="onSubmit"
+            >Create Combination</el-button
+          >
+          <el-button v-else type="primary" @click="updateCombination"
+            >Update Combination</el-button
+          >
           <el-button type="secondary" @click="onCancel">Cancel</el-button>
         </el-form-item>
       </el-row>
@@ -169,6 +180,7 @@ export default {
       currentFen: 'start',
       currentMove: 0,
       currentRow: 0,
+      categories: ['Sacrifice', 'Endgame'],
       combinationRange: [0, 0],
       gameLength: 0,
       movesUndo: [],
@@ -229,7 +241,7 @@ export default {
       this.form.description = null
       this.form.playerId = null
       getGame(gameId)
-        .then((res) => {
+        .then(res => {
           if (this.chess.load_pgn(res.pgn)) {
             this.game = res
             this.gameLength = this.chess.history().length
@@ -242,7 +254,7 @@ export default {
             this.turnColor = ''
           }
         })
-        .catch((err) => console.log(err))
+        .catch(err => console.log(err))
     },
     previewCombo() {},
     setCurrentMove(row) {
@@ -307,14 +319,14 @@ export default {
     },
     updateCombination() {
       this.prepareForm()
-      updateCombination(this.form).then((response) => {
+      updateCombination(this.form).then(response => {
         this.$router.push('content/combinations')
       })
     },
     onSubmit() {
       this.prepareForm()
 
-      createCombination(this.form).then((response) => {
+      createCombination(this.form).then(response => {
         this.$router.push('content/combinations')
       })
     },

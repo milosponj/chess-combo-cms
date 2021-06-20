@@ -5,15 +5,17 @@ using ChessComboCMS.Data;
 using ChessComboCMS.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ChessComboCMS.Migrations
 {
     [DbContext(typeof(ChessComboCMSContext))]
-    partial class ChessComboCMSContextModelSnapshot : ModelSnapshot
+    [Migration("20210620065109_add_category_and_birth_place")]
+    partial class add_category_and_birth_place
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,22 +64,13 @@ namespace ChessComboCMS.Migrations
                     b.Property<int?>("BlackPlayerId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ChessBaseUrl")
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset?>("Date")
+                    b.Property<DateTimeOffset>("Date")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<string>("PGN")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Venue")
                         .HasColumnType("text");
 
                     b.Property<int?>("WhitePlayerId")
@@ -99,7 +92,7 @@ namespace ChessComboCMS.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset?>("DateOfBirth")
+                    b.Property<DateTimeOffset>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FirstName")
