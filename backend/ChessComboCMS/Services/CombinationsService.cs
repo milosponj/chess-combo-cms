@@ -77,10 +77,9 @@ namespace ChessComboCMS.Services
                     BirthPlace = combination.Player.PlaceOfBirth,
                     BlackPlayerFullName = combination.Game.BlackPlayer.FullName,
                     WhitePlayerFullName = combination.Game.WhitePlayer.FullName,
-                    Category = combination.Category,
                     Date = combination.Game.Date.HasValue ? combination.Game.Date.Value.ToOurString() : "",
-                    Description = combination.Description,
-                    GameDescription = combination.Game.Description,
+                    GameTitle = combination.Game.Title,
+                    GameVenue = combination.Game.Venue,
                     Moves = JsonConvert.SerializeObject(combination.Moves.Select(m=>m.Fen)),
                     PlayerFullName = combination.Player.FullName
                 };

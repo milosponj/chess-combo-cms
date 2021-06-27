@@ -27,14 +27,10 @@ namespace ChessComboCMS.Models
         [JsonProperty("date")]
         public string Date { get; set; }
 
-        [JsonProperty("category")]
-        public string Category { get; set; }
-
-        [JsonProperty("description")]
-        public string Description { get; set; }
-
-        [JsonProperty("gameDescription")]
-        public string GameDescription { get; set; }
+        [JsonProperty("gameTitle")]
+        public string GameTitle { get; set; }
+        [JsonProperty("gameVenue")]
+        public string GameVenue { get; set; }
 
         [JsonProperty("moves")]
         public string Moves { get; set; }

@@ -22,7 +22,7 @@ namespace ChessComboCMS.Controllers
         [HttpGet]
         public ActionResult GetMeta()
         {
-            return Ok(_config.GetConnectionString("DefaultConnection").Substring(0, 9));
+            return Ok(_config.GetConnectionString("DefaultConnection").Substring(0, 5));
         }
     }
 }

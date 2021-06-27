@@ -17,6 +17,9 @@
       <el-form-item label="Game URL" prop="url">
         <el-input v-model="form.chessBaseUrl" />
       </el-form-item>
+      <el-form-item label="Venue" prop="venue">
+        <el-input v-model="form.venue" />
+      </el-form-item>
       <el-form-item label="Game date">
         <el-col :span="11">
           <el-date-picker

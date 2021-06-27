@@ -19,7 +19,7 @@
     >
       <el-table-column align="center" label="ID" width="45">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.$index+1 }}
         </template>
       </el-table-column>
       <el-table-column label="White">
@@ -89,7 +89,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getGamesList().then((response) => {
+      getGamesList().then(response => {
         this.list = response
         this.listLoading = false
       })

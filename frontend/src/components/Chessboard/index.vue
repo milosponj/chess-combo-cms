@@ -35,7 +35,7 @@ export default {
     this.board = new Chessboard(document.getElementById('board'), {
       position: this.fen,
       responsive: true,
-      style: { aspectRatio: 0.9, showCoordinates: false, showBorder: true },
+      style: { aspectRatio: 0.9, showCoordinates: true, showBorder: true },
       sprite: {
         url: this.chessPieces, // pieces and markers are stored as svg in the sprite
         grid: 40 // the sprite is tiled with one piece every 40px

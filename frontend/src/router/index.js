@@ -59,6 +59,7 @@ export const constantRoutes = [
   {
     path: "/content/players",
     name: "Players",
+    key: "Players",
     component: Layout,
     children: [
       {
@@ -70,8 +71,9 @@ export const constantRoutes = [
     ]
   },
   {
-    path: "/content/games",
+    path: "/content",
     name: "Games",
+    key: "Games",
     component: Layout,
     children: [
       {
@@ -86,7 +88,8 @@ export const constantRoutes = [
     path: "/content",
     component: Layout,
     redirect: "/content/games",
-    name: "Content",
+    key: "Combinations",
+    name: "Combinations",
     meta: { title: "Content Management", icon: "chess" },
     children: [
       {

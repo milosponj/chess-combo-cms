@@ -3,7 +3,7 @@
     <el-form ref="form" :rules="rules" :model="form" label-width="120px">
       <el-form-item label="Game" />
       <el-row type="flex" justify="center">
-        <el-col :span="10" justify="center">
+        <el-col :span="12" justify="center">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <el-select
@@ -69,6 +69,11 @@
                     height="320"
                     highlight-current-row
                   >
+                  <el-table-column
+                      prop="number"
+                      label="Nr."
+                      width="50"
+                    />
                     <el-table-column
                       prop="annotation"
                       label="Move"
@@ -90,8 +95,7 @@
                       <template slot-scope="scope">
                         <el-input
                           v-model="scope.row.remark"
-                          type="textarea"
-                          size="small"
+                          type="textarea"                         
                         />
                       </template>
                     </el-table-column>
@@ -104,19 +108,6 @@
                     rows="3"
                     type="textarea"
                   />
-                </el-row>
-                <el-row>
-                  <el-select
-                    v-model="form.category"
-                    placeholder="Select Category"
-                  >
-                    <el-option
-                      v-for="item in categories"
-                      :key="item"
-                      :label="item"
-                      :value="item"
-                    />
-                  </el-select>
                 </el-row>
                 <el-row v-if="game">
                   <label> Combination owner </label>
@@ -175,12 +166,21 @@ import Chessboard from '@/components/Chessboard'
 export default {
   name: 'EditCombination',
   components: { Chessboard },
+  created() {
+    window.addEventListener('keydown', e => {
+      if (e.key == 'ArrowLeft') {
+        this.traverseRow(false)
+      }
+      if (e.key == 'ArrowRight') {
+        this.traverseRow(true)
+      }
+    })
+  },
   data() {
     return {
       currentFen: 'start',
       currentMove: 0,
       currentRow: 0,
-      categories: ['Sacrifice', 'Endgame'],
       combinationRange: [0, 0],
       gameLength: 0,
       movesUndo: [],
@@ -299,14 +299,22 @@ export default {
       }
       this.currentRow = 0
       this.setTurn(this.chess.turn())
-      this.combination = this.gameMoves
+
+      const newCombination = this.gameMoves
         .map((currElement, index) => {
+          const previousMove = this.combination.find(
+            c => c.number === index + 1
+          )
+
           const rObj = {}
           rObj['annotation'] = currElement
           rObj['number'] = index + 1
+          rObj['remark'] = previousMove?.remark
+          rObj['sign'] = previousMove?.sign
           return rObj
         })
         .slice(newRange[0], newRange[1])
+      this.combination = newCombination
       this.setCurrentMove(this.combination[0])
     },
     setTurn(color) {
@@ -360,7 +368,6 @@ export default {
       })
     },
     checkPgn() {
-      console.log('checking pgn')
       const isPgnValid = this.chess.load_pgn(this.form.pgn)
       console.log('is pgn valid ', isPgnValid)
     },
@@ -383,5 +390,8 @@ export default {
 }
 .el-col {
   border-radius: 4px;
+}
+.el-radio {
+  margin:12px;
 }
 </style>
