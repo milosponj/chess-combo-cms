@@ -353,10 +353,10 @@ export default {
       })
     },
     prepareForm() {
-      this.form.combination = this.combination
+      this.form.combination = this.combination.slice(0)
 
       // Add the starting position move to the combination
-      const initialPosition = this.gameMoves[this.combinationRange[0] - 1]
+      const initialPosition = this.gameMoves[this.combinationRange[0] - 2]
       this.form.combination.unshift({
         annotation: initialPosition.annotation,
         number: this.combinationRange[0] - 1,

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ChessComboCMS.Domain;
 using ChessComboCMS.Models;
 using ChessComboCMS.Services;
+using System.Linq;
 
 namespace ChessComboCMS.Controllers
 {
@@ -33,7 +34,7 @@ namespace ChessComboCMS.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CombinationListItemResponse>>> GetCombinations()
         {
-            return Ok(await _combinationsService.GetAllAsync());
+            return Ok((await _combinationsService.GetAllAsync()).OrderBy(c=>c.Id));
         }
 
         [HttpGet("{id}")]
