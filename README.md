@@ -10,10 +10,6 @@ It's Vue using a shitty ElementUI as UI framework. I tried to cut some corners b
 
 .NET Core API with PostgreSQL as db. Best way to run it is to use a Docker image of Postgresql and provide connection string in appsettings.json
 
-**UPDATE**: I created a free heroku postgreSQL instance and applied the initial migrations. Keep in mind that data from there can ocassionally disappear. So if you don't want to create local instance of Postgre add this to your appsettings.json file:
-
-`"ConnectionStrings": { "DefaultConnection": "Server=ec2-54-247-158-179.eu-west-1.compute.amazonaws.com;Port=5432;Database=dmu8d4tmsuces;username=wegxqxyqnnyusx;password=37c3741d56800fd96c88ccd86750beefe2a18df2f22df4882e21c112187db085;SslMode=Require;Trust Server Certificate=true" }`
-
 ## Tasks
 
 - Backend

@@ -216,11 +216,13 @@ export default {
     this.games = await getGamesList()
     if (this.$route.query.id) {
       const c = await getCombination(this.$route.query.id)
-      console.log(c, { c })
+      console.log('backend returned combination', c)
       this.form.gameId = c.gameId
       this.getGame(c.gameId)
       this.form.description = c.description
       this.form.playerId = c.playerId
+      // remove the initial move
+      c.moves.shift()
       this.combination = c.moves
       this.form.combination = c.moves
       this.form.id = c.id
@@ -248,7 +250,19 @@ export default {
             this.combinationRange = [this.gameLength, this.gameLength]
             this.currentMove = this.chess.history().length
             this.currentRow = 0
-            this.gameMoves = this.chess.history()
+
+            var allMoves = this.chess.history()
+            var chessTemp = new Chess()
+            var gameMovesObj = []
+            for (var move in this.chess.history()) {
+              chessTemp.move(allMoves[move])
+              gameMovesObj.push({
+                annotation: allMoves[move],
+                number: move,
+                fen: chessTemp.fen()
+              })
+            }
+            this.gameMoves = gameMovesObj
             this.currentFen = this.chess.fen()
             this.movesUndo = []
             this.turnColor = ''
@@ -256,7 +270,6 @@ export default {
         })
         .catch(err => console.log(err))
     },
-    previewCombo() {},
     setCurrentMove(row) {
       this.$refs.movesTable.setCurrentRow(row)
     },
@@ -307,10 +320,11 @@ export default {
           )
 
           const rObj = {}
-          rObj['annotation'] = currElement
+          rObj['annotation'] = currElement.annotation
           rObj['number'] = index + 1
           rObj['remark'] = previousMove?.remark
           rObj['sign'] = previousMove?.sign
+          rObj['fen'] = currElement.fen
           return rObj
         })
         .slice(newRange[0], newRange[1])
@@ -339,32 +353,16 @@ export default {
       })
     },
     prepareForm() {
-      const tempChess = new Chess()
-      tempChess.load_pgn(this.game.pgn)
-      const movesFens = []
-      const chessGameLength = tempChess.history().length
+      this.form.combination = this.combination
 
-      // These two for loops aim to generate the
-      // fens of each of move in combination
-      for (
-        let index = 0;
-        index < chessGameLength - this.combinationRange[1];
-        index++
-      ) {
-        tempChess.undo()
-      }
-      for (
-        let i = 0;
-        i < this.combinationRange[1] - this.combinationRange[0] + 1;
-        i++
-      ) {
-        movesFens.unshift(tempChess.fen())
-        tempChess.undo()
-      }
-      this.form.combination = this.combination.map((c, i) => {
-        const x = { ...c }
-        x.fen = movesFens[i]
-        return x
+      // Add the starting position move to the combination
+      const initialPosition = this.gameMoves[this.combinationRange[0] - 1]
+      this.form.combination.unshift({
+        annotation: initialPosition.annotation,
+        number: this.combinationRange[0] - 1,
+        fen: initialPosition.fen,
+        remark: 'Initial Position',
+        sign: null
       })
     },
     checkPgn() {

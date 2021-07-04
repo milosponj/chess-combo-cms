@@ -50,30 +50,26 @@ namespace ChessComboCMS.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCombination(int id, UpdateCombinationRequest combination)
+        public async Task<IActionResult> PutCombination(int id, UpdateCombinationRequest combinationUpdateRequest)
         {
-            if (id != combination.Id)
+            if (id != combinationUpdateRequest.Id)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(combination).State = EntityState.Modified;
+            var combination = await _combinationsService.GetAsync(id);
 
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!CombinationExists(id))
-            //    {
-            //        return NotFound();
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
+            if (combination == null)
+            {
+                return BadRequest("Combination not found");
+            }
+
+            combination.Description = combinationUpdateRequest.Description;
+            combination.GameId = combinationUpdateRequest.GameId;
+            combination.Moves = combinationUpdateRequest.Combination;
+            combination.PlayerId = combinationUpdateRequest.PlayerId;
+
+            await _combinationsService.UpdateCombinationAsync(combination);
 
             return NoContent();
         }

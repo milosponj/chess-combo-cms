@@ -9,6 +9,7 @@ namespace ChessComboCMS.Services
     public interface ICombinationsService
     {
         Task<Combination> AddCombinationAsync(CreateCombinationRequest combination);
+        Task UpdateCombinationAsync(Combination combination);
         Task<List<CombinationListItemResponse>> GetAllAsync();
         Task<Combination> GetAsync(int id);
         Task<bool> CombinationExistsAsync(int id);

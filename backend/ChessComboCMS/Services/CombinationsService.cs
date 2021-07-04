@@ -88,5 +88,12 @@ namespace ChessComboCMS.Services
 
             return retval;
         }
+
+        public async Task UpdateCombinationAsync(Combination combination)
+        {
+            _context.Entry(combination).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
