@@ -1,38 +1,36 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ChessComboCMS.Models
 {
     public class MintReadyCombinationItem
     {
-        [JsonProperty("whitePlayerFullName")]
+        [JsonPropertyName("cid")]
+        public string CmsId { get; set; }
+        [JsonPropertyName("whitePlayerFullName")]
         public string WhitePlayerFullName { get; set; }
 
-        [JsonProperty("blackPlayerFullName")]
+        [JsonPropertyName("blackPlayerFullName")]
         public string BlackPlayerFullName { get; set; }
 
-        [JsonProperty("playerFullName")]
+        [JsonPropertyName("playerFullName")]
         public string PlayerFullName { get; set; }
 
-        [JsonProperty("birthDate")]
+        [JsonPropertyName("birthDate")]
         public string BirthDate { get; set; }
 
-        [JsonProperty("birthPlace")]
+        [JsonPropertyName("birthPlace")]
         public string BirthPlace { get; set; }
 
-        [JsonProperty("date")]
+        [JsonPropertyName("date")]
         public string Date { get; set; }
 
-        [JsonProperty("gameTitle")]
+        [JsonPropertyName("gameTitle")]
         public string GameTitle { get; set; }
-        [JsonProperty("gameVenue")]
+        [JsonPropertyName("gameVenue")]
         public string GameVenue { get; set; }
 
-        [JsonProperty("moves")]
+        [JsonPropertyName("moves")]
         public string Moves { get; set; }
     }
 }

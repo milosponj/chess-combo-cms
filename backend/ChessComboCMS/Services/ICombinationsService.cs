@@ -10,9 +10,8 @@ namespace ChessComboCMS.Services
     {
         Task<Combination> AddCombinationAsync(CreateCombinationRequest combination);
         Task UpdateCombinationAsync(Combination combination);
-        Task<List<CombinationListItemResponse>> GetAllAsync();
+        Task<List<Combination>> GetAllAsync();
         Task<Combination> GetAsync(int id);
         Task<bool> CombinationExistsAsync(int id);
-        Task<List<MintReadyCombinationItem>> GetMintReadyCombinationsAsync();
     }
 }

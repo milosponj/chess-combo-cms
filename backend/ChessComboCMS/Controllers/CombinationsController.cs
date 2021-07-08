@@ -5,6 +5,7 @@ using ChessComboCMS.Domain;
 using ChessComboCMS.Models;
 using ChessComboCMS.Services;
 using System.Linq;
+using System.Text.Json;
 
 namespace ChessComboCMS.Controllers
 {
@@ -19,22 +20,65 @@ namespace ChessComboCMS.Controllers
             _combinationsService = combinationService;
         }
 
+        /// <summary>
+        /// TODO This should be authorized call and only called from Portal
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("fullData")]
+        public async Task<ActionResult<IEnumerable<Combination>>> GetFullDataOfAllCombinations()
+        {
+            var combinations = await _combinationsService.GetAllAsync();
+            var response = combinations.Select(c => CombinationFullDataResponse.FromCombination(c));
+            return Ok(response);
+        }
 
+        /// <summary>
+        /// This should be authorized call and only called from Minter
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("mintReady")]
-        public async Task<ActionResult<IEnumerable<MintReadyCombinationItem>>> GetMintReadyCombinations()
+        public async Task<ActionResult<IEnumerable<Combination>>> GetMintReadyCombinations()
         {
-            // Combo NFTs are minted from combinations (difference between the two is like a difference between a physical car and a blueprint of a car)
-            // Combo NFT is a physical car, something that phyisically exists on blockchain and it's unchangeable
-            // Combination is just a blueprint used for creating (= minting) Combos
-            var mintReadyCombinations = await _combinationsService.GetMintReadyCombinationsAsync();
+            var combinations = await _combinationsService.GetAllAsync();
+            var mintReadyCombinations = new List<MintReadyCombinationItem>();
+            foreach (var combination in combinations)
+            {
+                var r = new MintReadyCombinationItem()
+                {
+                    CmsId = $"{combination.Id}",
+                    BirthDate = combination.Player.DateOfBirth.HasValue ? combination.Player.DateOfBirth.Value.ToOurString() : "",
+                    BirthPlace = combination.Player.PlaceOfBirth,
+                    BlackPlayerFullName = combination.Game.BlackPlayer.FullName,
+                    WhitePlayerFullName = combination.Game.WhitePlayer.FullName,
+                    Date = combination.Game.Date.HasValue ? combination.Game.Date.Value.ToOurString() : "",
+                    GameTitle = combination.Game.Title,
+                    GameVenue = combination.Game.Venue,
+                    Moves = JsonSerializer.Serialize(combination.Moves.OrderBy(m=>m.Number).Select(m => m.Fen).ToList()),
+                    PlayerFullName = combination.Player.FullName
+                };
+                mintReadyCombinations.Add(r);
+            }
+
             return Ok(mintReadyCombinations);
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CombinationListItemResponse>>> GetCombinations()
         {
-            return Ok((await _combinationsService.GetAllAsync()).OrderBy(c=>c.Id));
+            var allCombinations = await _combinationsService.GetAllAsync();
+            var res = allCombinations.Select(c => new CombinationListItemResponse()
+            {
+                WhitePlayerName = c.Game.WhitePlayer?.FullName,
+                BlackPlayerName = c.Game.BlackPlayer?.FullName,
+                OwnerPlayerName = c.Player?.FullName,
+                Description = c.Description,
+                GameDate = c.Game.Date.HasValue ? c.Game.Date.Value.ToString("dd. MMMM yyyy") : "",
+                NumberOfMoves = c.Moves.Count(),
+                Id = c.Id
+            }).ToList();
+            return Ok(res.OrderBy(c=>c.Id));
         }
 
         [HttpGet("{id}")]
