@@ -25,23 +25,12 @@ resource "azurerm_storage_account" "storage" {
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-
+	
+  static_website {
+    index_document = "index.html"
+  }
+  
   tags = {
     environment = "dev"
   }
-}
-
-resource "azurerm_storage_table" "players_table" {
-  name                 = "players"
-  storage_account_name = azurerm_storage_account.storage.name
-}
-
-resource "azurerm_storage_table" "games_table" {
-  name                 = "games"
-  storage_account_name = azurerm_storage_account.storage.name
-}
-
-resource "azurerm_storage_table" "combinations_table" {
-  name                 = "combinations"
-  storage_account_name = azurerm_storage_account.storage.name
 }
