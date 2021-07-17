@@ -1,12 +1,14 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - combo-cms-api-dev
+name: combo-cms-api-dev
 
 on:
   push:
     branches:
       - master
+    paths:
+      - "backend/**"
   workflow_dispatch:
 
 jobs:
@@ -23,7 +25,10 @@ jobs:
         include-prerelease: true
 
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      shell: bash
+      run: |
+        cd $GITHUB_WORKSPACE/backend
+        dotnet build --configuration Release
 
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
