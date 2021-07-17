@@ -33,13 +33,13 @@
               </el-col>
             </el-row>
             <el-slider
+              ref="sliderRange"
               v-model="combinationRange"
               :disabled="game == null"
               range
               show-stops
               :max="gameLength"
               @change="changeRange"
-              ref="sliderRange"
             />
           </el-card>
         </el-col>
@@ -52,12 +52,14 @@
               <el-col>
                 <el-row type="flex" justify="center">
                   <el-button-group>
-                    <el-button type="primary" @click="traverseRow(false)"
-                      >&lt;</el-button
-                    >
-                    <el-button type="primary" @click="traverseRow(true)"
-                      >&GT;</el-button
-                    >
+                    <el-button
+                      type="primary"
+                      @click="traverseRow(false)"
+                    >&lt;</el-button>
+                    <el-button
+                      type="primary"
+                      @click="traverseRow(true)"
+                    >&GT;</el-button>
                   </el-button-group>
                 </el-row>
                 <el-row>
@@ -69,7 +71,7 @@
                     height="320"
                     highlight-current-row
                   >
-                  <el-table-column
+                    <el-table-column
                       prop="number"
                       label="Nr."
                       width="50"
@@ -95,7 +97,7 @@
                       <template slot-scope="scope">
                         <el-input
                           v-model="scope.row.remark"
-                          type="textarea"                         
+                          type="textarea"
                         />
                       </template>
                     </el-table-column>
@@ -140,12 +142,16 @@
       </el-row>
       <el-row>
         <el-form-item>
-          <el-button v-if="!form.id" type="primary" @click="onSubmit"
-            >Create Combination</el-button
-          >
-          <el-button v-else type="primary" @click="updateCombination"
-            >Update Combination</el-button
-          >
+          <el-button
+            v-if="!form.id"
+            type="primary"
+            @click="onSubmit"
+          >Create Combination</el-button>
+          <el-button
+            v-else
+            type="primary"
+            @click="updateCombination"
+          >Update Combination</el-button>
           <el-button type="secondary" @click="onCancel">Cancel</el-button>
         </el-form-item>
       </el-row>
@@ -166,16 +172,6 @@ import Chessboard from '@/components/Chessboard'
 export default {
   name: 'EditCombination',
   components: { Chessboard },
-  created() {
-    window.addEventListener('keydown', e => {
-      if (e.key == 'ArrowLeft') {
-        this.traverseRow(false)
-      }
-      if (e.key == 'ArrowRight') {
-        this.traverseRow(true)
-      }
-    })
-  },
   data() {
     return {
       currentFen: 'start',
@@ -211,6 +207,16 @@ export default {
       chess: null
     }
   },
+  created() {
+    window.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') {
+        this.traverseRow(false)
+      }
+      if (e.key === 'ArrowRight') {
+        this.traverseRow(true)
+      }
+    })
+  },
   async mounted() {
     this.chess = new Chess()
     this.games = await getGamesList()
@@ -233,7 +239,7 @@ export default {
         while (this.currentMove > startRange) {
           this.traverseMove(false)
         }
-      }, 100)
+      }, 300)
     }
   },
   methods: {
@@ -341,25 +347,28 @@ export default {
     },
     updateCombination() {
       this.prepareForm()
+      console.log('updateCombination', this.form)
       updateCombination(this.form).then(response => {
         this.$router.push('content/combinations')
       })
     },
     onSubmit() {
       this.prepareForm()
-
+      console.log('submitting', this.form)
       createCombination(this.form).then(response => {
         this.$router.push('content/combinations')
       })
     },
     prepareForm() {
       this.form.combination = this.combination.slice(0)
-
       // Add the starting position move to the combination
-      const initialPosition = this.gameMoves[this.combinationRange[0] - 2]
+      let initialPosition = this.gameMoves[this.combinationRange[0] - 1]
+      if (initialPosition.annotation === this.form.combination[0].annotation) {
+        initialPosition = this.gameMoves[this.combinationRange[0] - 2]
+      }
       this.form.combination.unshift({
         annotation: initialPosition.annotation,
-        number: this.combinationRange[0] - 1,
+        number: this.form.combination[0].number - 1,
         fen: initialPosition.fen,
         remark: 'Initial Position',
         sign: null

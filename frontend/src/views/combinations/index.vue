@@ -18,7 +18,7 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="White" >
+      <el-table-column label="White">
         <template slot-scope="scope">
           {{ scope.row.whitePlayerName }}
         </template>
@@ -26,6 +26,11 @@
       <el-table-column label="Black">
         <template slot-scope="scope">
           <span>{{ scope.row.blackPlayerName }}</span>
+        </template>
+      </el-table-column>
+     <el-table-column label="Initial">
+        <template slot-scope="scope">
+           <Chessboard :fen="scope.row.initialFen" />
         </template>
       </el-table-column>
       <el-table-column label="Description">
@@ -55,8 +60,11 @@
 
 <script>
 import { getCombinationsList } from '@/api/combinations'
+import Chessboard from '@/components/Chessboard'
 
 export default {
+  name: 'Combinations',
+  components: { Chessboard },
   filters: {
     statusFilter(status) {
       const statusMap = {

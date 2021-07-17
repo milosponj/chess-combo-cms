@@ -15,5 +15,6 @@ namespace ChessComboCMS.Models
         public string GameDate { get; set; }
         public string Description { get; set; }
         public int NumberOfMoves { get; set; }
+        public string InitialFen { get; set; }
     }
 }

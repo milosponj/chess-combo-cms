@@ -70,6 +70,7 @@ namespace ChessComboCMS.Controllers
             var allCombinations = await _combinationsService.GetAllAsync();
             var res = allCombinations.Select(c => new CombinationListItemResponse()
             {
+                InitialFen = c.Moves.First().Fen,
                 WhitePlayerName = c.Game.WhitePlayer?.FullName,
                 BlackPlayerName = c.Game.BlackPlayer?.FullName,
                 OwnerPlayerName = c.Player?.FullName,

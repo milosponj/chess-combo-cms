@@ -18,7 +18,7 @@ export function createCombination(data) {
 
 export function updateCombination(data) {
   return request({
-    url: '/api/combinations/'+data.id,
+    url: '/api/combinations/' + data.id,
     method: 'put',
     data
   })

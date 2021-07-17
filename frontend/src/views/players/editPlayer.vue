@@ -25,8 +25,8 @@
       <el-form-item label="Place of Birth">
         <el-col :span="11">
           <el-input
-          v-model="form.placeOfBirth"
-        />
+            v-model="form.placeOfBirth"
+          />
         </el-col>
       </el-form-item>
       <el-form-item>

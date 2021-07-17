@@ -14,7 +14,7 @@
     >
       <el-table-column align="center" label="ID" width="45">
         <template slot-scope="scope">
-          {{ scope.$index + 1}}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
       <el-table-column label="First Name">

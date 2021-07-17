@@ -10,7 +10,7 @@ export function createGame(data) {
 
 export function updateGame(data) {
   return request({
-    url: '/api/games/'+data.id,
+    url: '/api/games/' + data.id,
     method: 'put',
     data
   })

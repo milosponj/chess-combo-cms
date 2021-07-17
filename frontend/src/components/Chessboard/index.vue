@@ -1,5 +1,5 @@
 <template>
-  <div id="board" class="chess-board" />
+  <div :id=fen class="chess-board" />
 </template>
 
 <script>
@@ -32,7 +32,7 @@ export default {
   mounted() {
     this.game = new Chess()
     console.log(this.game.fen())
-    this.board = new Chessboard(document.getElementById('board'), {
+    this.board = new Chessboard(document.getElementById(this.fen), {
       position: this.fen,
       responsive: true,
       style: { aspectRatio: 0.9, showCoordinates: true, showBorder: true },

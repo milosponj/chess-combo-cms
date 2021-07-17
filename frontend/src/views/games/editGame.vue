@@ -62,7 +62,7 @@
       </el-form-item>
 
       <el-form-item>
-        
+
         <el-button v-if="!form.id" type="primary" @click="createGame">Create</el-button>
         <el-button v-else type="primary" @click="updateGame">Update</el-button>
 
@@ -100,8 +100,6 @@ export default {
             trigger: 'blur'
           }
         ],
-        whitePlayerId: [{ validator: this.validateId }],
-        blackPlayerId: [{ validator: this.validateId }],
         description: [{ required: true }],
         title: [{ required: true }],
         whitePlayerId: [{ required: true }],
