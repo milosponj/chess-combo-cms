@@ -81,6 +81,6 @@ resource "azurerm_app_service" "chess_combo_cms_api" {
 
   app_settings = {
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.cms_app_insights.instrumentation_key
-    ConnectionStrings__ChessComboConnectionString = "${var.chess_combo_connection_string}"
+    ConnectionStrings__DefaultConnection = "${var.cms_connection_string}"
   }
 }
