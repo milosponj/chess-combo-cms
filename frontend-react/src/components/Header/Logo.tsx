@@ -36,7 +36,7 @@ export function Logo() {
       </svg>
       <Center>
         <Heading px={1} size="lg">
-          Pack Handler
+          CMS
         </Heading>
       </Center>
     </Flex>

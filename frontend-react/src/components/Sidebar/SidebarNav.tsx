@@ -21,14 +21,14 @@ export function SidebarNav() {
         </NavLink>
       </NavSection>
 
-      <NavSection title="Automação">
+      {/* <NavSection title="Automação">
         <NavLink icon={RiInputMethodLine} href="/forms">
           Formulários
         </NavLink>
         <NavLink icon={RiGitMergeLine} href="/automation">
           Automação
         </NavLink>
-      </NavSection>
+      </NavSection> */}
     </Stack>
   );
 }
