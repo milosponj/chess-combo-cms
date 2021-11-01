@@ -9,12 +9,12 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
-import { setCobmo, useStateValue } from "../state";
+import { setCombo, useStateValue } from "../state";
 import { Combination, Game } from "../interfaces";
 
 
 export const CombinationList = () => {
-  const [{ combo }, dispatch] = useStateValue();
+  const [, dispatch] = useStateValue();
   const fetchComboAndGame = async (id: number) => {
     console.log("editing specific combo");
     try {
@@ -25,12 +25,11 @@ export const CombinationList = () => {
       const { data: gameFromApi } = await axios.get<Game>(
         `${apiBaseUrl}/games/${gameId}`
       );
-      dispatch(setCobmo(combinationFromApi, gameFromApi));
+      dispatch(setCombo(combinationFromApi, gameFromApi));
     } catch (e) {
       console.error(e);
     }
   };
-  console.log(combo);
 
   return (
     <ChakraProvider theme={theme}>

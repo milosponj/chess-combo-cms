@@ -47,7 +47,7 @@ export const setCombinations = (combinations: Combination[]): Action => {
     payload: combinations,
   };
 };
-export const setCobmo = (combo: Combination, game: Game): Action => {
+export const setCombo = (combo: Combination, game: Game): Action => {
   return {
     type: "SET_COMBO",
     payload: { combo, game },
