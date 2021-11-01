@@ -18,7 +18,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import SidebarWithHeader from "../layout";
 import { ChessboardComponent } from "../components/Chessboard";
-import { setCobmo, useStateValue } from "../state";
+import { setCombo, useStateValue } from "../state";
 import { Combination, Direction, Game, Move } from "../interfaces";
 import React, { useEffect, useState } from "react";
 import Chess from "chess.js";
@@ -47,7 +47,7 @@ export const CombinationEdit = () => {
         const { data: gameFromApi } = await axios.get<Game>(
           `${apiBaseUrl}/games/${gameId}`
         );
-        dispatch(setCobmo(combinationFromApi, gameFromApi));
+        dispatch(setCombo(combinationFromApi, gameFromApi));
       } catch (e) {
         console.error(e);
       }
@@ -223,12 +223,20 @@ export const CombinationEdit = () => {
                     {selectedMoves[0]
                       ? selectedMoves.slice(1).map((move: Move) => {
                           return (
-                            <Tr key={move.number}>
+                            <Tr
+                              backgroundColor={
+                                selectedMoves[index].number === move.number
+                                  ? "gray.200"
+                                  : ""
+                              }
+                              key={move.number}
+                            >
                               <Td
                                 w="30px"
                                 p="12px"
                                 borderColor="gray.400"
                                 borderWidth="0.5px"
+                                borderLeftWidth="0"
                               >
                                 {move.number}
                               </Td>
