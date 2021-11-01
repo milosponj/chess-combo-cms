@@ -1,20 +1,15 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorker";
-import { CombinationEdit } from "./views/CombinationEdit";
-import { CombinationList } from "./views/CombinationList";
+import { reducer, StateProvider } from "./state";
 
 ReactDOM.render(
   <React.StrictMode>
-    <HashRouter>
-      <Switch>
-        <Route path={`/combinations/:id`} component={CombinationEdit} />
-        <Route path={`/combinations`} component={CombinationList} />
-        <Redirect from={`/`} to="/combinations" />
-      </Switch>
-    </HashRouter>
+    <StateProvider reducer={reducer}>
+      <App />
+    </StateProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

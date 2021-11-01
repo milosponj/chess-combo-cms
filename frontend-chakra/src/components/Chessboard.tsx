@@ -4,15 +4,17 @@ import { useEffect, useState } from "react";
 import ChessPieces from "../assets/chessboard-sprite-staunty.svg";
 import "../../node_modules/cm-chessboard/assets/styles/cm-chessboard.css";
 
-export function ChessboardComponent() {
-  const fen = "2r3k1/5p2/4N2b/2p3p1/1p1p4/1P5P/qB3PP1/5RK1 w - - 0 35";
-  console.log(ChessPieces, "AXCZDS");
+interface Props {
+  fen: string
+}
+
+export const ChessboardComponent: React.FC<Props> = (props: Props) => {
   const [chessBoard, setChessBoard] = useState<any>(null);
   useEffect(() => {
     if (!chessBoard) {
       setChessBoard(
         new Chessboard(document.getElementById(`combination-`), {
-          position: fen,
+          position: props.fen,
           responsive: true,
           style: {
             aspectRatio: 0.9,
@@ -26,13 +28,12 @@ export function ChessboardComponent() {
         })
       );
     } else {
-      chessBoard.setPosition(fen);
+      chessBoard.setPosition(props.fen);
     }
-  }, [chessBoard, fen]);
-  console.log(chessBoard);
+  }, [chessBoard, props.fen]);
+
   return (
     <div id={`combination-`}>
-      <p>HEEEELLLOO</p>
     </div>
   );
 }
