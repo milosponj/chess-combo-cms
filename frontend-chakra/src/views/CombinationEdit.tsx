@@ -2,7 +2,6 @@ import {
   ChakraProvider,
   SimpleGrid,
   Box,
-  theme,
   Text,
   Table,
   Thead,
@@ -14,19 +13,27 @@ import {
   Spinner,
   Select,
   Button,
+  Flex,
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import SidebarWithHeader from "../layout";
 import { ChessboardComponent } from "../components/Chessboard";
 import { setCombo, useStateValue } from "../state";
-import { Combination, Direction, Game, Move } from "../interfaces";
+import {
+  Combination,
+  Direction,
+  EditCombinationRequest,
+  Game,
+  Move,
+} from "../interfaces";
 import React, { useEffect, useState } from "react";
 import Chess from "chess.js";
 import { useParams } from "react-router";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
 import { CustomRangeSlider } from "../components/CustomRangeSlider";
-import { CustomSelect } from "../components/CustomSelect";
+import { useHistory } from "react-router-dom";
+import { theme } from "../theme";
 
 export const CombinationEdit = () => {
   const [{ combo }, dispatch] = useStateValue();
@@ -36,6 +43,9 @@ export const CombinationEdit = () => {
   const [sliderValues, setSliderValues] = useState({ min: 0, max: 0 });
   const [fen, setFen] = useState("");
   const [index, setIndex] = useState(0);
+  const [comboOwnerId, setComboOwnerId] = useState("");
+  const [comboDescription, setComboDescription] = useState("");
+  let history = useHistory();
 
   useEffect(() => {
     const fetchComboAndGame = async (id: number) => {
@@ -48,6 +58,10 @@ export const CombinationEdit = () => {
           `${apiBaseUrl}/games/${gameId}`
         );
         dispatch(setCombo(combinationFromApi, gameFromApi));
+        setComboOwnerId(combinationFromApi.playerId.toString());
+        setComboDescription(
+          combinationFromApi.description ? combinationFromApi.description : ""
+        );
       } catch (e) {
         console.error(e);
       }
@@ -129,25 +143,60 @@ export const CombinationEdit = () => {
     }
   };
 
+  const sendEditComboRequest = async (ev: any) => {
+    ev.preventDefault();
+    try {
+      const requestBody: EditCombinationRequest = {
+        gameId: combo.gameId,
+        id: combo.id,
+        playerId: parseInt(comboOwnerId),
+        description: comboDescription,
+        combination: selectedMoves,
+      };
+      await axios.put<Combination>(
+        `${apiBaseUrl}/combinations/${combo.id}`,
+        requestBody
+      );
+      history.push("/");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleMoveChange = (
+    remark: string,
+    sign: string,
+    moveNumber: number
+  ) => {
+    const updatedMove = selectedMoves.find((m) => m.number === moveNumber)!;
+    updatedMove.remark = remark;
+    updatedMove.sign = sign;
+
+    setSelectedMoves(
+      selectedMoves.map((m) => (m.number === moveNumber ? updatedMove : m))
+    );
+  };
+
+  const selectOptions: string[] = ["", "!", "!!", "?", "??", "!?", "?!"];
+
   return (
     <ChakraProvider theme={theme}>
       <SidebarWithHeader>
-        <form>
+        <form onSubmit={sendEditComboRequest}>
           <SimpleGrid
             flex="1"
             gap="4"
             minChildWidth="320px"
             alignItems="flex-start"
           >
-            <Box p={["6", "8"]} bg="gray.300" borderRadius={8} pb="4">
+            <Box p={["6", "8"]} className="combo-box" h="600px">
               {combo.id && moves[0] ? (
                 <div>
                   <Text
                     mb={4}
                     p={["2", "2"]}
-                    borderColor="gray.400"
+                    borderColor="gray.800"
                     borderWidth="0.5px"
-                    borderRadius={4}
                     pb={6}
                   >
                     {combo.game.blackPlayer.fullName} vs{" "}
@@ -165,167 +214,151 @@ export const CombinationEdit = () => {
                   thickness="4px"
                   speed="0.65s"
                   emptyColor="gray.200"
-                  color="blue.500"
+                  color="gray.500"
                   size="xl"
                 />
               )}
             </Box>
-            <Box p={["6", "6"]} bg="gray.300" borderRadius={8} pb="4">
-              <Box
-                m={2}
-                w="100%"
-                h="280px"
-                overflowY="scroll"
-                overflowX="hidden"
-                borderWidth={"0.5px"}
-                borderRadius={4}
-                borderColor="gray.400"
-              >
-                <Table variant="unstyled">
-                  <Thead variant="unstyled">
-                    <Tr>
-                      <Th
-                        w="30px"
-                        p="12px"
-                        borderColor="gray.400"
-                        borderRightWidth="0.5px"
-                        borderBottomWidth="0.5px"
-                      >
-                        No
-                      </Th>
-                      <Th
-                        w="30px"
-                        p="12px"
-                        borderColor="gray.400"
-                        borderRightWidth="0.5px"
-                        borderBottomWidth="0.5px"
-                      >
-                        Move
-                      </Th>
-                      <Th
-                        w="125px"
-                        borderColor="gray.400"
-                        borderRightWidth="0.5px"
-                        borderBottomWidth="0.5px"
-                      >
-                        Sign
-                      </Th>
-                      <Th
-                        borderColor="gray.400"
-                        borderBottomWidth="0.5px"
-                        w="200px"
-                      >
-                        Remark
-                      </Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {selectedMoves[0]
-                      ? selectedMoves.slice(1).map((move: Move) => {
-                          return (
-                            <Tr
-                              backgroundColor={
-                                selectedMoves[index].number === move.number
-                                  ? "gray.200"
-                                  : ""
-                              }
-                              key={move.number}
-                            >
-                              <Td
-                                w="30px"
-                                p="12px"
-                                borderColor="gray.400"
-                                borderWidth="0.5px"
-                                borderLeftWidth="0"
-                              >
-                                {move.number}
-                              </Td>
-                              <Td
-                                w="30px"
-                                p="12px"
-                                borderColor="gray.400"
-                                borderWidth="0.5px"
-                              >
-                                {move.annotation}
-                              </Td>
-                              <Td borderColor="gray.400" borderWidth="0.5px">
-                                <CustomSelect sign={move.sign} />
-                              </Td>
-                              <Td
-                                w="250px"
-                                borderColor="gray.400"
-                                borderWidth="0.5px"
-                              >
-                                <Textarea
-                                  defaultValue={move.remark}
-                                  size="sm"
-                                />
-                              </Td>
-                            </Tr>
-                          );
-                        })
-                      : null}
-                  </Tbody>
-                </Table>
-              </Box>
-              <SimpleGrid
-                borderWidth="gray.500"
-                w="100%"
-                m={2}
-                columns={2}
-                spacing={2}
-              >
-                <Button
-                  borderWidth="0.5px"
-                  borderColor="gray.400"
-                  backgroundColor="gray.300"
-                  size="sm"
-                  onClick={() => onArrowClick(Direction.Left)}
-                >
-                  <ChevronLeftIcon />
-                </Button>
-                <Button
-                  backgroundColor="gray.300"
-                  borderWidth="0.5px"
-                  borderColor="gray.400"
-                  size="sm"
-                  onClick={() => onArrowClick(Direction.Right)}
-                >
-                  <ChevronRightIcon />
-                </Button>
-              </SimpleGrid>
-              <Text w="100%" m={2} mb={0} fontWeight="semibold">
-                Combination Description
-              </Text>
-              <Textarea
-                m={2}
-                borderColor="gray.400"
-                resize="vertical"
-                value={combo.description}
-              ></Textarea>
-              <Text m={2} w="100%" fontWeight="semibold">
-                Combination owner
-              </Text>
-              <Select
-                borderColor="gray.400"
-                m={2}
-                w="100%"
-                placeholder=""
-                defaultValue={
-                  combo.playerId === combo.game.whitePlayerId
-                    ? combo.game.whitePlayerId
-                    : combo.game.blackPlayerId
-                }
-              >
-                <option value={combo.game.whitePlayerId}>
-                  {combo.game.whitePlayer.fullName}
-                </option>
-                <option value={combo.game.whitePlayerId}>
-                  {combo.game.blackPlayer.fullName}
-                </option>
-              </Select>
-            </Box>
+            {combo.id && moves[0] ? (
+              <div>
+                <Box p={["6", "6"]} className="combo-box" h="600px">
+                  <Box
+                    m={2}
+                    w="100%"
+                    h="280px"
+                    overflowY="scroll"
+                    overflowX="hidden"
+                  >
+                    <Table variant="unstyled">
+                      <Thead variant="unstyled">
+                        <Tr>
+                          <Th borderWidth="0.5px"  w="30px" p="10px">
+                            No
+                          </Th>
+                          <Th borderWidth="0.5px" w="30px" p="10px">
+                            Move
+                          </Th>
+                          <Th borderWidth="0.5px" w="60px" p="10px">
+                            Sign
+                          </Th>
+                          <Th borderWidth="0.5px" w="200px" p="10px">
+                            Remark
+                          </Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {selectedMoves[0]
+                          ? selectedMoves.slice(1).map((move: Move) => {
+                              return (
+                                <Tr
+                                  backgroundColor={
+                                    selectedMoves[index].number === move.number
+                                      ? "gray.900"
+                                      : ""
+                                  }
+                                  key={move.number}
+                                >
+                                  <Td fontSize="md" borderWidth="0.5px" w="30px" p="10px">
+                                    {move.number}
+                                  </Td>
+                                  <Td fontSize="md" borderWidth="0.5px" w="30px" p="10px">
+                                    {move.annotation}
+                                  </Td>
+                                  <Td borderWidth="0.5px" w="60px" p="10px">
+                                    <Select
+                                      placeholder=""
+                                      borderRadius={0}
+                                      onChange={(ev) =>
+                                        handleMoveChange(
+                                          move.remark,
+                                          ev.currentTarget.value,
+                                          move.number
+                                        )
+                                      }
+                                      value={move.sign ? move.sign : ""}
+                                    >
+                                      {selectOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                          {option}
+                                        </option>
+                                      ))}
+                                    </Select>
+                                  </Td>
+                                  <Td borderWidth="0.5px" w="200px" p="10px">
+                                    <Textarea
+                                      borderWidth={0}
+                                      m={0}
+                                      p={0}
+                                      onChange={(ev) =>
+                                        handleMoveChange(
+                                          ev.currentTarget.value,
+                                          move.sign,
+                                          move.number
+                                        )
+                                      }
+                                      value={move.remark ? move.remark : ""}
+                                      size="sm"
+                                    />
+                                  </Td>
+                                </Tr>
+                              );
+                            })
+                          : null}
+                      </Tbody>
+                    </Table>
+                  </Box>
+                  <SimpleGrid w="100%" m={2} columns={2} spacing={2}>
+                    <Button
+                      size="sm"
+                      onClick={() => onArrowClick(Direction.Left)}
+                    >
+                      <ChevronLeftIcon />
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => onArrowClick(Direction.Right)}
+                    >
+                      <ChevronRightIcon />
+                    </Button>
+                  </SimpleGrid>
+                  <Text w="100%" m={2} mb={0}>
+                    Combination Description
+                  </Text>
+                  <Textarea
+                    borderRadius={0}
+                    m={2}
+                    resize="vertical"
+                    onChange={(ev) =>
+                      setComboDescription(ev.currentTarget.value)
+                    }
+                    value={comboDescription}
+                  ></Textarea>
+                  <Text m={2} w="100%">
+                    Combination owner
+                  </Text>
+                  <Select
+                    borderRadius={0}
+                    m={2}
+                    w="100%"
+                    onChange={(ev) => setComboOwnerId(ev.currentTarget.value)}
+                    value={comboOwnerId}
+                  >
+                    <option value={combo.game.whitePlayerId}>
+                      {combo.game.whitePlayer.fullName}
+                    </option>
+                    <option value={combo.game.blackPlayerId}>
+                      {combo.game.blackPlayer.fullName}
+                    </option>
+                  </Select>
+                </Box>{" "}
+              </div>
+            ) : null}
           </SimpleGrid>
+          <Flex justify="right">
+            <Button mt={2} pl={6} pr={6} bgColor="black" type="submit">
+              Submit
+            </Button>
+          </Flex>
         </form>
       </SidebarWithHeader>
     </ChakraProvider>

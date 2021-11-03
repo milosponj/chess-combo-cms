@@ -37,6 +37,14 @@ export type Combination = {
   category?: string;
 };
 
+export type EditCombinationRequest = {
+  id: number;
+  gameId: number;
+  playerId: number;
+  combination: Move[];
+  description?: string;
+}
+
 export type Move = {
   annotation: string;
   number: number;

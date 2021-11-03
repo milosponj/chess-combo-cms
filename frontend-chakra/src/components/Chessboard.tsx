@@ -5,16 +5,16 @@ import ChessPieces from "../assets/chessboard-sprite-staunty.svg";
 import "../../node_modules/cm-chessboard/assets/styles/cm-chessboard.css";
 
 interface Props {
-  fen: string
+  fen: string;
 }
 
-export const ChessboardComponent: React.FC<Props> = (props: Props) => {
+export const ChessboardComponent: React.FC<Props> = ({ fen }: Props) => {
   const [chessBoard, setChessBoard] = useState<any>(null);
   useEffect(() => {
     if (!chessBoard) {
       setChessBoard(
         new Chessboard(document.getElementById(`combination-`), {
-          position: props.fen,
+          position: fen,
           responsive: true,
           style: {
             aspectRatio: 0.9,
@@ -28,12 +28,9 @@ export const ChessboardComponent: React.FC<Props> = (props: Props) => {
         })
       );
     } else {
-      chessBoard.setPosition(props.fen);
+      chessBoard.setPosition(fen);
     }
-  }, [chessBoard, props.fen]);
+  }, [chessBoard, fen]);
 
-  return (
-    <div id={`combination-`}>
-    </div>
-  );
-}
+  return <div id={`combination-`}></div>;
+};

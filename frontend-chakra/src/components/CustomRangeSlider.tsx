@@ -12,8 +12,11 @@ interface Props {
   setSliderValues: any;
 }
 
-export const CustomRangeSlider: React.FC<Props> = (props: Props) => {
-  const { range, numberOfMoves, setSliderValues } = props;
+export const CustomRangeSlider: React.FC<Props> = ({
+  range,
+  numberOfMoves,
+  setSliderValues,
+}: Props) => {
   const onSliderChange = (values: number[]) => {
     setSliderValues({ min: values[0], max: values[1] });
   };
@@ -21,8 +24,6 @@ export const CustomRangeSlider: React.FC<Props> = (props: Props) => {
   return (
     <div>
       <RangeSlider
-        // eslint-disable-next-line jsx-a11y/aria-proptypes
-        aria-label={["min", "max"]}
         defaultValue={[range.min, range.max]}
         mt={"4"}
         min={0}
