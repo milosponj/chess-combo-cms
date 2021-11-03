@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorker";
+import "./font.css";
+import "./customCss.css";
 import { reducer, StateProvider } from "./state";
 
 ReactDOM.render(
