@@ -29,11 +29,10 @@ import {
 import React, { useEffect, useState } from "react";
 import Chess from "chess.js";
 import { useParams } from "react-router";
-import axios from "axios";
-import { apiBaseUrl } from "../constants";
 import { CustomRangeSlider } from "../components/CustomRangeSlider";
 import { useHistory } from "react-router-dom";
-import { theme } from "../theme";
+import { theme } from "../theme/theme";
+import { getCombo, getGame, updateCombo } from "../services/api";
 
 export const CombinationEdit = () => {
   const [{ combo }, dispatch] = useStateValue();
@@ -50,13 +49,9 @@ export const CombinationEdit = () => {
   useEffect(() => {
     const fetchComboAndGame = async (id: number) => {
       try {
-        const { data: combinationFromApi } = await axios.get<Combination>(
-          `${apiBaseUrl}/combinations/${id}`
-        );
+        const combinationFromApi: Combination = await getCombo(id);
         const gameId = combinationFromApi.gameId;
-        const { data: gameFromApi } = await axios.get<Game>(
-          `${apiBaseUrl}/games/${gameId}`
-        );
+        const gameFromApi: Game = await getGame(gameId);
         dispatch(setCombo(combinationFromApi, gameFromApi));
         setComboOwnerId(combinationFromApi.playerId.toString());
         setComboDescription(
@@ -153,10 +148,7 @@ export const CombinationEdit = () => {
         description: comboDescription,
         combination: selectedMoves,
       };
-      await axios.put<Combination>(
-        `${apiBaseUrl}/combinations/${combo.id}`,
-        requestBody
-      );
+      await updateCombo(combo.id, requestBody);
       history.push("/");
     } catch (e) {
       console.error(e);
@@ -189,7 +181,7 @@ export const CombinationEdit = () => {
             minChildWidth="320px"
             alignItems="flex-start"
           >
-            <Box p={["6", "8"]} className="combo-box" h="600px">
+            <Box p={["6", "8"]} className="combo-box" h="100%">
               {combo.id && moves[0] ? (
                 <div>
                   <Text
@@ -232,7 +224,7 @@ export const CombinationEdit = () => {
                     <Table variant="unstyled">
                       <Thead variant="unstyled">
                         <Tr>
-                          <Th borderWidth="0.5px"  w="30px" p="10px">
+                          <Th borderWidth="0.5px" w="30px" p="10px">
                             No
                           </Th>
                           <Th borderWidth="0.5px" w="30px" p="10px">
@@ -258,10 +250,20 @@ export const CombinationEdit = () => {
                                   }
                                   key={move.number}
                                 >
-                                  <Td fontSize="md" borderWidth="0.5px" w="30px" p="10px">
+                                  <Td
+                                    fontSize="md"
+                                    borderWidth="0.5px"
+                                    w="30px"
+                                    p="10px"
+                                  >
                                     {move.number}
                                   </Td>
-                                  <Td fontSize="md" borderWidth="0.5px" w="30px" p="10px">
+                                  <Td
+                                    fontSize="md"
+                                    borderWidth="0.5px"
+                                    w="30px"
+                                    p="10px"
+                                  >
                                     {move.annotation}
                                   </Td>
                                   <Td borderWidth="0.5px" w="60px" p="10px">
