@@ -1,16 +1,12 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { Game, Combination } from "../interfaces";
+import { Combination } from "../interfaces";
 import { Action } from "./reducer";
 
 export type State = {
-  games: { [id: number]: Game };
-  combinations: { [id: number]: Combination };
   combo: Combination;
 };
 
 const initialState: State = {
-  games: {},
-  combinations: {},
   combo: {
     id: 0,
     gameId: 0,
