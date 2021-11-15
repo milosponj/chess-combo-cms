@@ -1,4 +1,11 @@
-import { Game, Move, NewCombinationEntry, Player } from "./interfaces";
+import {
+  Combination,
+  CombinationEntity,
+  Game,
+  Move,
+  NewCombinationEntry,
+  Player,
+} from "./interfaces";
 import { validate } from "uuid";
 import { Chess } from "chess.js";
 
@@ -6,9 +13,19 @@ export const toNewCombinationEntry = (object: any): NewCombinationEntry => {
   const newEntry: NewCombinationEntry = {
     moves: parseMoves(object.moves),
     game: parseGame(object.game),
-    description: parseDescription(object.description),
+    description: object.description,
   };
   return newEntry;
+};
+
+export const toCombination = (object: CombinationEntity): Combination => {
+  const combination: Combination = {
+    id: object.rowKey,
+    game: JSON.parse(object.game),
+    moves: JSON.parse(object.moves),
+    description: object.description,
+  };
+  return combination;
 };
 
 const parseMoves = (moves: any): Move[] => {
@@ -29,18 +46,11 @@ const parseGame = (game: any): Game => {
     blackPlayerId: parseUUID(game.blackPlayerId),
     whitePlayer: parsePlayer(game.whitePlayer),
     whitePlayerId: parseUUID(game.whitePlayerId),
-    description: parseDescription(game.description),
+    description: game.description,
     chessBaseUrl: game.chessBaseUrl,
     title: game.title,
     venue: game.venue,
   };
-};
-
-const parseDescription = (description: any): string => {
-  if (description && !isString(description)) {
-    throw new Error("Incorrect description: " + description);
-  }
-  return description;
 };
 
 const parsePlayer = (player: any): Player => {
@@ -52,8 +62,8 @@ const parsePlayer = (player: any): Player => {
     firstName: parseName(player.firstName),
     lastName: parseName(player.lastName),
     fullName: parseName(player.fullName),
-    dateOfBirth: parseDateOfBirth(player.dateOfBirth),
-    placeOfBirth: parsePlaceOfBirth(player.placeOfBirth),
+    dateOfBirth: player.dateOfBirth,
+    placeOfBirth: player.placeOfBirth,
   };
 };
 
@@ -64,20 +74,6 @@ const parseName = (name: any): string => {
   return name;
 };
 
-const parseDateOfBirth = (date: any): string => {
-  if (date && !isDate(date)) {
-    throw new Error("Incorrect date: " + date);
-  }
-  return date;
-};
-
-const parsePlaceOfBirth = (place: any): string => {
-  if (place && !isString(place)) {
-    throw new Error("Incorrect place of birth: " + place);
-  }
-  return place;
-};
-
 const parsePGN = (pgn: any): string => {
   const chess = new Chess();
   if (!pgn || !isString(pgn) || !chess.load_pgn(pgn)) {
@@ -86,7 +82,7 @@ const parsePGN = (pgn: any): string => {
   return pgn;
 };
 
-const parseUUID = (uuid: any): string => {
+export const parseUUID = (uuid: any): string => {
   if (!uuid || !isString(uuid) || !validate(uuid)) {
     throw new Error("Incorrect or missing id: " + uuid);
   }
@@ -95,13 +91,4 @@ const parseUUID = (uuid: any): string => {
 
 const isString = (text: any): text is string => {
   return typeof text === "string" || text instanceof String;
-};
-
-const isNumber = (number: any): number is number => {
-    return typeof number === "number" || number instanceof Number;
-  };
-  
-
-const isDate = (date: string): boolean => {
-  return Boolean(Date.parse(date));
 };

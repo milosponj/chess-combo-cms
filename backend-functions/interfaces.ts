@@ -13,6 +13,14 @@ export interface NewCombinationEntry {
   moves: Move[];
 }
 
+export interface CombinationEntity {
+  partitionKey: string;
+  rowKey: string
+  game: string;
+  description?: string;
+  moves: string;
+}
+
 export interface Combination {
   id: string;
   game: Game;
