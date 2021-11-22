@@ -4,7 +4,7 @@
       "authLevel": "function",
       "type": "httpTrigger",
       "direction": "in",
-      "route": "GetCombination/{comboId:guid}",
+      "route": "GetCombination/{comboId}",
       "name": "req",
       "methods": [
         "get"

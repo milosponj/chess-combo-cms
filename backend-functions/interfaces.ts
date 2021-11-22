@@ -35,6 +35,7 @@ export interface Game {
   whitePlayer: Player;
   blackPlayerId: string;
   blackPlayer: Player;
+  date?: String;
   description?: string;
   chessBaseUrl?: string;
   title?: string;
@@ -42,18 +43,19 @@ export interface Game {
 }
 
 export interface Move {
-  fen: string;
-  sign?: string;
+  annotation: string;
   number: number;
   remark?: string;
-  annotation: string;
+  sign?: string;
+  fen: string;
 }
 
 export interface Player {
   id: string;
   firstName: string;
   lastName: string;
+  fullName: string;
+  playerAvatarURL?: string;
   dateOfBirth?: string;
   placeOfBirth?: string;
-  fullName: string;
 }
