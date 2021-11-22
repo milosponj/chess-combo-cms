@@ -8,7 +8,7 @@ const httpTrigger: AzureFunction = async function (
   req: HttpRequest
 ): Promise<void> {
   try {
-    const id: string = parseUUID(req.params.comboId);
+    const id: string = parseUUID(req.params.id);
     const result: CombinationEntity = await getCombination(
       "DefaultPartitionKey",
       id
