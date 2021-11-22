@@ -14,13 +14,16 @@ const httpTrigger: AzureFunction = async function (
       id
     );
     const response: Combination = toCombination(result);
-
     context.res = {
       status: 200,
       body: response,
     };
   } catch (e) {
-    context.res = { status: 400, body: e.message };
+    if (e.message === "Failed to retrieve the combination.") {
+      context.res = { status: 404, body: e.message };
+    } else {
+      context.res = { status: 400, body: e.message };
+    }
   }
 };
 

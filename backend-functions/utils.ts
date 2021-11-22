@@ -30,14 +30,14 @@ export const toCombination = (object: CombinationEntity): Combination => {
 
 const parseMoves = (moves: any): Move[] => {
   if (!moves || !moves[0]) {
-    throw new Error("Moves are not selected!");
+    throw new Error("Moves are not selected.");
   }
   return moves;
 };
 
 const parseGame = (game: any): Game => {
   if (!game) {
-    throw new Error("Game is not define");
+    throw new Error("Game is not define.");
   }
   return {
     id: parseUUID(game.id),
@@ -46,6 +46,7 @@ const parseGame = (game: any): Game => {
     blackPlayerId: parseUUID(game.blackPlayerId),
     whitePlayer: parsePlayer(game.whitePlayer),
     whitePlayerId: parseUUID(game.whitePlayerId),
+    date: game.date,
     description: game.description,
     chessBaseUrl: game.chessBaseUrl,
     title: game.title,
@@ -55,13 +56,14 @@ const parseGame = (game: any): Game => {
 
 const parsePlayer = (player: any): Player => {
   if (!player) {
-    throw new Error("Incorrect or missing player: " + player);
+    throw new Error(`Incorrect or missing player ${player}.`);
   }
   return {
     id: parseUUID(player.id),
     firstName: parseName(player.firstName),
     lastName: parseName(player.lastName),
     fullName: parseName(player.fullName),
+    playerAvatarURL: player.playerAvatarURL,
     dateOfBirth: player.dateOfBirth,
     placeOfBirth: player.placeOfBirth,
   };
@@ -69,7 +71,7 @@ const parsePlayer = (player: any): Player => {
 
 const parseName = (name: any): string => {
   if (!name || !isString(name)) {
-    throw new Error("Incorrect or missing player's name: " + name);
+    throw new Error(`Incorrect or missing player's name: ${name}.`);
   }
   return name;
 };
@@ -77,14 +79,14 @@ const parseName = (name: any): string => {
 const parsePGN = (pgn: any): string => {
   const chess = new Chess();
   if (!pgn || !isString(pgn) || !chess.load_pgn(pgn)) {
-    throw new Error("Incorrect or missing pgn: " + pgn);
+    throw new Error(`Incorrect or missing pgn: ${pgn}.`);
   }
   return pgn;
 };
 
 export const parseUUID = (uuid: any): string => {
   if (!uuid || !isString(uuid) || !validate(uuid)) {
-    throw new Error("Incorrect or missing id: " + uuid);
+    throw new Error(`Incorrect or missing id: ${uuid}.`);
   }
   return uuid;
 };

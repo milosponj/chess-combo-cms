@@ -4,23 +4,23 @@ import { CombinationEntity } from "../interfaces";
 export const addCombination = async (combination: CombinationEntity) => {
   try {
     const client = TableClient.fromConnectionString(
-      "UseDevelopmentStorage=true",
+      process.env["AzureWebJobsStorage"],
       "combinations"
     );
     const response = await client.createEntity(combination);
     return response;
   } catch (error) {
-    console.log(
-      "Error while inserting new combinations, error message: ",
-      error.message
-    );
+    throw new Error("Error while inserting new combination.");
   }
 };
 
-export const getCombination = async (partitionKey: string, rowKey: string) => {
+export const getCombination = async (
+  partitionKey: string,
+  rowKey: string
+): Promise<CombinationEntity> => {
   try {
     const client = TableClient.fromConnectionString(
-      "UseDevelopmentStorage=true",
+      process.env["AzureWebJobsStorage"],
       "combinations"
     );
     const response = await client.getEntity<CombinationEntity>(
@@ -29,17 +29,14 @@ export const getCombination = async (partitionKey: string, rowKey: string) => {
     );
     return response;
   } catch (error) {
-    console.log(
-      "Failed to retrieve the combination, error message: ",
-      error.message
-    );
+    throw new Error("Failed to retrieve the combination.");
   }
 };
 
 export const getCombinations = async () => {
   try {
     const client = TableClient.fromConnectionString(
-      "UseDevelopmentStorage=true",
+      process.env["AzureWebJobsStorage"],
       "combinations"
     );
     const entitiesIter = client.listEntities<CombinationEntity>();
@@ -49,9 +46,6 @@ export const getCombinations = async () => {
     }
     return entities;
   } catch (error) {
-    console.log(
-      "Failed to retrieve the combinations, error message: ",
-      error.message
-    );
+    throw new Error("Failed to retrieve combinations.");
   }
 };

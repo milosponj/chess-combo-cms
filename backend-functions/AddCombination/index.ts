@@ -9,6 +9,9 @@ const httpTrigger: AzureFunction = async function (
   req: HttpRequest
 ): Promise<void> {
   try {
+    if (!req.body){
+      throw new Error("Request body is not defined.")
+    }
     const combinationEntry: NewCombinationEntry = toNewCombinationEntry(
       req.body
     );
@@ -20,8 +23,8 @@ const httpTrigger: AzureFunction = async function (
       rowKey: uuid(),
     };
 
-    const result = await addCombination(combinationEntity)
-    context.res = { status: 200, body: `New combination added, ${JSON.stringify(result)}`};
+    await addCombination(combinationEntity)
+    context.res = { status: 201, body: `New combination added.`};
   } catch (e) {
     context.res = { status: 400, body: e.message };
   }
