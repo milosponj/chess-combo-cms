@@ -3,3 +3,27 @@
   border-width: 0.5px;
   border-color: "#222";
 }
+.combo-text {
+  border-width: 0.5px;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 15px;
+  margin-bottom: 15px;
+}
+.td-box {
+  border-width: 0.5px;
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+}
+td {
+  border-width: 0.5px;
+  width: auto;
+  font-size: medium;
+}
+th {
+  border-width: 0.5px;
+  width: auto;
+  font-size: medium;
+}

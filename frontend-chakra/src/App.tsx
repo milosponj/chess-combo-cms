@@ -1,18 +1,24 @@
 import * as React from "react";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import { CombinationEdit } from "./views/CombinationEdit";
-import { CombinationList } from "./views/CombinationList";
+import { Combinations } from "./views/Combinations";
 
 const App: React.FC = () => {
+
   return (
     <div className="App">
-      <HashRouter>
+      <Router>
         <Switch>
           <Route path={`/combinations/:id`} component={CombinationEdit} />
-          <Route path={`/combinations`} render={() => <CombinationList/>} />
+          <Route path={`/combinations`} render={() => <Combinations />} />
           <Redirect from={`/`} to="/combinations" />
         </Switch>
-      </HashRouter>
+      </Router>
     </div>
   );
 };

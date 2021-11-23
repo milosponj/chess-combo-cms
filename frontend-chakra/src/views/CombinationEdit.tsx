@@ -10,7 +10,6 @@ import {
   Th,
   Td,
   Textarea,
-  Spinner,
   Select,
   Button,
   Flex,
@@ -23,7 +22,6 @@ import {
   Combination,
   Direction,
   EditCombinationRequest,
-  Game,
   Move,
 } from "../interfaces";
 import React, { useEffect, useState } from "react";
@@ -32,7 +30,7 @@ import { useParams } from "react-router";
 import { CustomRangeSlider } from "../components/CustomRangeSlider";
 import { useHistory } from "react-router-dom";
 import { theme } from "../theme/theme";
-import { getCombo, getGame, updateCombo } from "../services/api";
+import { getCombo, updateCombo } from "../services/api";
 
 export const CombinationEdit = () => {
   const [{ combo }, dispatch] = useStateValue();
@@ -42,18 +40,14 @@ export const CombinationEdit = () => {
   const [sliderValues, setSliderValues] = useState({ min: 0, max: 0 });
   const [fen, setFen] = useState("");
   const [index, setIndex] = useState(0);
-  const [comboOwnerId, setComboOwnerId] = useState("");
   const [comboDescription, setComboDescription] = useState("");
   let history = useHistory();
 
   useEffect(() => {
-    const fetchComboAndGame = async (id: number) => {
+    const fetchCombo = async (id: string) => {
       try {
         const combinationFromApi: Combination = await getCombo(id);
-        const gameId = combinationFromApi.gameId;
-        const gameFromApi: Game = await getGame(gameId);
-        dispatch(setCombo(combinationFromApi, gameFromApi));
-        setComboOwnerId(combinationFromApi.playerId.toString());
+        dispatch(setCombo(combinationFromApi));
         setComboDescription(
           combinationFromApi.description ? combinationFromApi.description : ""
         );
@@ -61,7 +55,7 @@ export const CombinationEdit = () => {
         console.error(e);
       }
     };
-    fetchComboAndGame(params.id);
+    fetchCombo(params.id);
   }, [params.id, dispatch]);
 
   useEffect(() => {
@@ -142,9 +136,8 @@ export const CombinationEdit = () => {
     ev.preventDefault();
     try {
       const requestBody: EditCombinationRequest = {
-        gameId: combo.gameId,
+        game: combo.game,
         id: combo.id,
-        playerId: parseInt(comboOwnerId),
         description: comboDescription,
         combination: selectedMoves,
       };
@@ -184,32 +177,18 @@ export const CombinationEdit = () => {
             <Box p={["6", "8"]} className="combo-box" h="100%">
               {combo.id && moves[0] ? (
                 <div>
-                  <Text
-                    mb={4}
-                    p={["2", "2"]}
-                    borderColor="gray.800"
-                    borderWidth="0.5px"
-                    pb={6}
-                  >
+                  <Text className="combo-text" borderColor="gray.800">
                     {combo.game.blackPlayer.fullName} vs{" "}
                     {combo.game.whitePlayer.fullName}
                   </Text>
-                  {fen ? <ChessboardComponent fen={fen} /> : null}
+                  {fen ? <ChessboardComponent fen={fen} id={combo.id} /> : null}
                   <CustomRangeSlider
                     range={{ min: sliderValues.min, max: sliderValues.max }}
                     numberOfMoves={moves.length - 1}
                     setSliderValues={setSliderValues}
                   />
                 </div>
-              ) : (
-                <Spinner
-                  thickness="4px"
-                  speed="0.65s"
-                  emptyColor="gray.200"
-                  color="gray.500"
-                  size="xl"
-                />
-              )}
+              ) : null}
             </Box>
             {combo.id && moves[0] ? (
               <div>
@@ -224,16 +203,16 @@ export const CombinationEdit = () => {
                     <Table variant="unstyled">
                       <Thead variant="unstyled">
                         <Tr>
-                          <Th borderWidth="0.5px" w="30px" p="10px">
+                          <Th w="30px" p="10px">
                             No
                           </Th>
-                          <Th borderWidth="0.5px" w="30px" p="10px">
+                          <Th w="30px" p="10px">
                             Move
                           </Th>
-                          <Th borderWidth="0.5px" w="60px" p="10px">
+                          <Th w="60px" p="10px">
                             Sign
                           </Th>
-                          <Th borderWidth="0.5px" w="200px" p="10px">
+                          <Th w="200px" p="10px">
                             Remark
                           </Th>
                         </Tr>
@@ -250,23 +229,13 @@ export const CombinationEdit = () => {
                                   }
                                   key={move.number}
                                 >
-                                  <Td
-                                    fontSize="md"
-                                    borderWidth="0.5px"
-                                    w="30px"
-                                    p="10px"
-                                  >
+                                  <Td w="30px" p="10px">
                                     {move.number}
                                   </Td>
-                                  <Td
-                                    fontSize="md"
-                                    borderWidth="0.5px"
-                                    w="30px"
-                                    p="10px"
-                                  >
+                                  <Td w="30px" p="10px">
                                     {move.annotation}
                                   </Td>
-                                  <Td borderWidth="0.5px" w="60px" p="10px">
+                                  <Td w="60px" p="10px">
                                     <Select
                                       placeholder=""
                                       borderRadius={0}
@@ -286,9 +255,10 @@ export const CombinationEdit = () => {
                                       ))}
                                     </Select>
                                   </Td>
-                                  <Td borderWidth="0.5px" w="200px" p="10px">
+                                  <Td w="200px" p="10px">
                                     <Textarea
                                       borderWidth={0}
+                                      size="sm"
                                       m={0}
                                       p={0}
                                       onChange={(ev) =>
@@ -299,7 +269,6 @@ export const CombinationEdit = () => {
                                         )
                                       }
                                       value={move.remark ? move.remark : ""}
-                                      size="sm"
                                     />
                                   </Td>
                                 </Tr>
@@ -329,35 +298,19 @@ export const CombinationEdit = () => {
                   <Textarea
                     borderRadius={0}
                     m={2}
+                    h="145px"
                     resize="vertical"
                     onChange={(ev) =>
                       setComboDescription(ev.currentTarget.value)
                     }
                     value={comboDescription}
                   ></Textarea>
-                  <Text m={2} w="100%">
-                    Combination owner
-                  </Text>
-                  <Select
-                    borderRadius={0}
-                    m={2}
-                    w="100%"
-                    onChange={(ev) => setComboOwnerId(ev.currentTarget.value)}
-                    value={comboOwnerId}
-                  >
-                    <option value={combo.game.whitePlayerId}>
-                      {combo.game.whitePlayer.fullName}
-                    </option>
-                    <option value={combo.game.blackPlayerId}>
-                      {combo.game.blackPlayer.fullName}
-                    </option>
-                  </Select>
-                </Box>{" "}
+                </Box>
               </div>
             ) : null}
           </SimpleGrid>
           <Flex justify="right">
-            <Button mt={2} pl={6} pr={6} bgColor="black" type="submit">
+            <Button mt={2} bgColor="black" type="submit">
               Submit
             </Button>
           </Flex>
