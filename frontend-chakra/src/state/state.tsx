@@ -4,31 +4,29 @@ import { Action } from "./reducer";
 
 export type State = {
   combo: Combination;
+  combinations: Combination[];
 };
 
 const initialState: State = {
   combo: {
-    id: 0,
-    gameId: 0,
-    player: null,
-    playerId: 0,
+    id: "",
     game: {
-      id: 0,
+      id: "",
       pgn: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       whitePlayer: {
-        id: 0,
+        id: "",
         firstName: "",
         lastName: "",
         fullName: "",
       },
-      whitePlayerId: 0,
+      whitePlayerId: "",
       blackPlayer: {
-        id: 0,
+        id: "",
         firstName: "",
         lastName: "",
         fullName: "",
       },
-      blackPlayerId: 0,
+      blackPlayerId: "",
     },
     moves: [
       {
@@ -40,6 +38,7 @@ const initialState: State = {
       },
     ],
   },
+  combinations: []
 };
 
 export const StateContext = createContext<[State, React.Dispatch<Action>]>([

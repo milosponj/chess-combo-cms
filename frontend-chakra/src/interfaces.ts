@@ -1,5 +1,5 @@
 export type Player = {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   dateOfBirth?: string;
@@ -13,13 +13,13 @@ export enum Direction {
 }
 
 export type Game = {
-  id: number;
+  id: string;
   pgn: string;
   date?: string;
   whitePlayer: Player;
-  whitePlayerId: number;
+  whitePlayerId: string;
   blackPlayer: Player;
-  blackPlayerId: number;
+  blackPlayerId: string;
   description?: string;
   chessBaseUrl?: string;
   title?: string;
@@ -27,20 +27,15 @@ export type Game = {
 };
 
 export type Combination = {
-  id: number;
+  id: string;
   game: Game;
-  gameId: number;
-  player: Player | null;
-  playerId: number;
   moves: Move[];
   description?: string;
-  category?: string;
 };
 
 export type EditCombinationRequest = {
-  id: number;
-  gameId: number;
-  playerId: number;
+  id: string;
+  game: Game;
   combination: Move[];
   description?: string;
 }
