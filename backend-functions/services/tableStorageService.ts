@@ -14,6 +14,20 @@ export const addCombination = async (combination: CombinationEntity) => {
   }
 };
 
+export const updateCombination = async (combination: CombinationEntity) => {
+  try {
+    const client = TableClient.fromConnectionString(
+      process.env["AzureWebJobsStorage"],
+      "combinations"
+    );
+    
+    const response = await client.updateEntity(combination);
+    return response;
+  } catch (error) {
+    throw new Error(`Error while saving edited combination.`);
+  }
+};
+
 export const getCombination = async (
   partitionKey: string,
   rowKey: string
