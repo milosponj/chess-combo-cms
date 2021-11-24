@@ -137,9 +137,8 @@ export const CombinationEdit = () => {
     try {
       const requestBody: EditCombinationRequest = {
         game: combo.game,
-        id: combo.id,
         description: comboDescription,
-        combination: selectedMoves,
+        moves: selectedMoves
       };
       await updateCombo(combo.id, requestBody);
       history.push("/");

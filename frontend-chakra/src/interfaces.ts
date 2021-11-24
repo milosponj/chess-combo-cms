@@ -34,9 +34,8 @@ export type Combination = {
 };
 
 export type EditCombinationRequest = {
-  id: string;
   game: Game;
-  combination: Move[];
+  moves: Move[];
   description?: string;
 }
 
