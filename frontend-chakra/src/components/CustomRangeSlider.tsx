@@ -1,10 +1,6 @@
-import {
-  RangeSlider,
-  RangeSliderFilledTrack,
-  RangeSliderThumb,
-  RangeSliderTrack,
-} from "@chakra-ui/slider";
+import { Range, getTrackBackground } from "react-range";
 import React from "react";
+import { Flex } from "@chakra-ui/layout";
 
 interface Props {
   range: { min: number; max: number };
@@ -22,21 +18,83 @@ export const CustomRangeSlider: React.FC<Props> = ({
   };
 
   return (
-    <div>
-      <RangeSlider
-        defaultValue={[range.min, range.max]}
-        mt={"4"}
+    <Flex mt={12} direction="column">
+      <Range
+        step={1}
         min={0}
         max={numberOfMoves}
-        step={1}
-        onChangeEnd={(value) => onSliderChange(value)}
-      >
-        <RangeSliderTrack>
-          <RangeSliderFilledTrack />
-        </RangeSliderTrack>
-        <RangeSliderThumb index={0} />
-        <RangeSliderThumb index={1} />
-      </RangeSlider>
-    </div>
+        values={[range.min, range.max]}
+        onChange={(values) => onSliderChange(values)}
+        renderTrack={({ props, children }) => (
+          <div
+            onMouseDown={props.onMouseDown}
+            onTouchStart={props.onTouchStart}
+            style={{
+              ...props.style,
+              height: "36px",
+              display: "flex",
+              width: "100%",
+            }}
+          >
+            <div
+              ref={props.ref}
+              style={{
+                height: "5px",
+                width: "100%",
+                borderRadius: "4px",
+                background: getTrackBackground({
+                  values: [range.min, range.max],
+                  colors: ["#666", "#e1c984", "#666"],
+                  min: 0,
+                  max: numberOfMoves,
+                  rtl: false,
+                }),
+                alignSelf: "center",
+              }}
+            >
+              {children}
+            </div>
+          </div>
+        )}
+        renderThumb={({ index, props, isDragged }) => (
+          <div
+            {...props}
+            style={{
+              ...props.style,
+              height: "32px",
+              width: "15px",
+              borderRadius: "0px",
+              backgroundColor: "white",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: "-36px",
+                color: "#fff",
+                fontSize: "14px",
+                padding: "4px",
+                borderRadius: "0px",
+                borderWidth: "1px",
+                borderColor: "#333",
+                backgroundColor: "black",
+              }}
+            >
+              {[range.min, range.max][index]}
+            </div>
+            <div
+              style={{
+                height: "16px",
+                width: "5px",
+                backgroundColor: isDragged ? "#e1c984" : "#999",
+              }}
+            />
+          </div>
+        )}
+      />
+    </Flex>
   );
 };

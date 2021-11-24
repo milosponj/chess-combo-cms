@@ -9,7 +9,6 @@ import { CombinationEdit } from "./views/CombinationEdit";
 import { Combinations } from "./views/Combinations";
 
 const App: React.FC = () => {
-
   return (
     <div className="App">
       <Router>
