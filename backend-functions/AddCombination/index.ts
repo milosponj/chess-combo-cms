@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { toNewCombinationEntry } from "../utils";
+import { toCombinationEntry } from "../utils";
 import { v4 as uuid } from "uuid";
-import { CombinationEntity, NewCombinationEntry } from "../interfaces";
+import { CombinationEntity, CombinationEntry } from "../interfaces";
 import { addCombination } from "../services/tableStorageService";
 
 const httpTrigger: AzureFunction = async function (
@@ -12,7 +12,7 @@ const httpTrigger: AzureFunction = async function (
     if (!req.body){
       throw new Error("Request body is not defined.")
     }
-    const combinationEntry: NewCombinationEntry = toNewCombinationEntry(
+    const combinationEntry: CombinationEntry = toCombinationEntry(
       req.body
     );
     const combinationEntity : CombinationEntity= {

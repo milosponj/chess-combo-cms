@@ -3,14 +3,14 @@ import {
   CombinationEntity,
   Game,
   Move,
-  NewCombinationEntry,
+  CombinationEntry,
   Player,
 } from "./interfaces";
 import { validate } from "uuid";
 import { Chess } from "chess.js";
 
-export const toNewCombinationEntry = (object: any): NewCombinationEntry => {
-  const newEntry: NewCombinationEntry = {
+export const toCombinationEntry = (object: any): CombinationEntry => {
+  const newEntry: CombinationEntry = {
     moves: parseMoves(object.moves),
     game: parseGame(object.game),
     description: object.description,
@@ -18,7 +18,7 @@ export const toNewCombinationEntry = (object: any): NewCombinationEntry => {
   return newEntry;
 };
 
-export const toCombination = (object: CombinationEntity): Combination => {
+export const toCombinationFromEntity = (object: CombinationEntity): Combination => {
   const combination: Combination = {
     id: object.rowKey,
     game: JSON.parse(object.game),

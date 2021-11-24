@@ -7,7 +7,7 @@ export interface ComboStyle {
   blackPiecesColor: string;
 }
 
-export interface NewCombinationEntry {
+export interface CombinationEntry {
   game: Game;
   description: string;
   moves: Move[];

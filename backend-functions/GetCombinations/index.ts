@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { Combination, CombinationEntity } from "../interfaces";
 import { getCombinations } from "../services/tableStorageService";
-import { toCombination } from "../utils";
+import { toCombinationFromEntity } from "../utils";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -10,7 +10,7 @@ const httpTrigger: AzureFunction = async function (
   try {
     const result: CombinationEntity[] = await getCombinations();
     const response: Combination[] = result.map((comboEntity) =>
-      toCombination(comboEntity)
+      toCombinationFromEntity(comboEntity)
     );
 
     context.res = {

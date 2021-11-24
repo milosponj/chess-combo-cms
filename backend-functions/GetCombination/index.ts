@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { Combination, CombinationEntity } from "../interfaces";
 import { getCombination } from "../services/tableStorageService";
-import { parseUUID, toCombination } from "../utils";
+import { parseUUID, toCombinationFromEntity } from "../utils";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -13,7 +13,7 @@ const httpTrigger: AzureFunction = async function (
       "DefaultPartitionKey",
       id
     );
-    const response: Combination = toCombination(result);
+    const response: Combination = toCombinationFromEntity(result);
     context.res = {
       status: 200,
       body: response,
