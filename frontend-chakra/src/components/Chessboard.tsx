@@ -6,14 +6,15 @@ import "../../node_modules/cm-chessboard/assets/styles/cm-chessboard.css";
 
 interface Props {
   fen: string;
+  id: string;
 }
 
-export const ChessboardComponent: React.FC<Props> = ({ fen }: Props) => {
+export const ChessboardComponent: React.FC<Props> = ({ fen, id }: Props) => {
   const [chessBoard, setChessBoard] = useState<any>(null);
   useEffect(() => {
     if (!chessBoard) {
       setChessBoard(
-        new Chessboard(document.getElementById(`combination-`), {
+        new Chessboard(document.getElementById(`chessboard-${id}`), {
           position: fen,
           responsive: true,
           style: {
@@ -30,7 +31,7 @@ export const ChessboardComponent: React.FC<Props> = ({ fen }: Props) => {
     } else {
       chessBoard.setPosition(fen);
     }
-  }, [chessBoard, fen]);
+  }, [chessBoard, fen, id]);
 
-  return <div id={`combination-`}></div>;
+  return <div id={`chessboard-${id}`}></div>;
 };

@@ -1,1 +1,1 @@
-export const apiBaseUrl = 'https://combo-cms-api-dev.azurewebsites.net/api';
+export const apiBaseUrl = 'http://localhost:7071/api'
