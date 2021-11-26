@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { CombinationEntity, CombinationEntry } from "../interfaces";
-import { updateCombination } from "../services/tableStorageService";
+import { updateCombination } from "../services/combinationService";
 import { parseUUID, toCombinationEntry } from "../utils";
 
 const httpTrigger: AzureFunction = async function (
@@ -24,6 +24,9 @@ const httpTrigger: AzureFunction = async function (
     await updateCombination(combinationEntity);
     context.res = { status: 200, body: `Resource updated successfully!` };
   } catch (e) {
+    if (e.statusCode === 404) {
+      context.res = { status: 404, body: e.message };
+    }
     context.res = { status: 400, body: e.message };
   }
 };

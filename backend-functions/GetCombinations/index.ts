@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { Combination, CombinationEntity } from "../interfaces";
-import { getCombinations } from "../services/tableStorageService";
+import { getCombinations } from "../services/combinationService";
 import { toCombinationFromEntity } from "../utils";
 
 const httpTrigger: AzureFunction = async function (

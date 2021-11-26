@@ -18,7 +18,9 @@ export const toCombinationEntry = (object: any): CombinationEntry => {
   return newEntry;
 };
 
-export const toCombinationFromEntity = (object: CombinationEntity): Combination => {
+export const toCombinationFromEntity = (
+  object: CombinationEntity
+): Combination => {
   const combination: Combination = {
     id: object.rowKey,
     game: JSON.parse(object.game),
@@ -37,7 +39,7 @@ const parseMoves = (moves: any): Move[] => {
 
 const parseGame = (game: any): Game => {
   if (!game) {
-    throw new Error("Game is not define.");
+    throw new Error("Game is not defined.");
   }
   return {
     id: parseUUID(game.id),
@@ -56,7 +58,7 @@ const parseGame = (game: any): Game => {
 
 const parsePlayer = (player: any): Player => {
   if (!player) {
-    throw new Error(`Incorrect or missing player ${player}.`);
+    throw new Error(`Incorrect or missing player.`);
   }
   return {
     id: parseUUID(player.id),
@@ -78,8 +80,11 @@ const parseName = (name: any): string => {
 
 const parsePGN = (pgn: any): string => {
   const chess = new Chess();
-  if (!pgn || !isString(pgn) || !chess.load_pgn(pgn)) {
-    throw new Error(`Incorrect or missing pgn: ${pgn}.`);
+  if (!pgn || !isString(pgn)) {
+    throw new Error(`Incorrect data or missing pgn: ${pgn}.`);
+  }
+  if (!chess.load_pgn(pgn)) {
+    throw new Error(`Invalid pgn: ${pgn}.`);
   }
   return pgn;
 };

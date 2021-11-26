@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { Combination, CombinationEntity } from "../interfaces";
-import { getCombination } from "../services/tableStorageService";
+import { getCombination } from "../services/combinationService";
 import { parseUUID, toCombinationFromEntity } from "../utils";
 
 const httpTrigger: AzureFunction = async function (
@@ -19,11 +19,10 @@ const httpTrigger: AzureFunction = async function (
       body: response,
     };
   } catch (e) {
-    if (e.message === "Failed to retrieve the combination.") {
+    if (e.statusCode === 404) {
       context.res = { status: 404, body: e.message };
-    } else {
-      context.res = { status: 400, body: e.message };
     }
+    context.res = { status: 400, body: e.message };
   }
 };
 
