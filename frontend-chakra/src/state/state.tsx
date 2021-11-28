@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { Combination } from "../interfaces";
+import { Combination, Player } from "../interfaces";
 import { Action } from "./reducer";
 
 export type State = {
   combo: Combination;
   combinations: Combination[];
+  player: Player;
+  players: Player[];
 };
 
 const initialState: State = {
@@ -38,7 +40,17 @@ const initialState: State = {
       },
     ],
   },
-  combinations: []
+  combinations: [],
+  player: {
+    id: "",
+    firstName: "",
+    lastName: "",
+    fullName: "",
+    dateOfBirth: undefined,
+    placeOfBirth: "",
+    avatar: "",
+  },
+  players: []
 };
 
 export const StateContext = createContext<[State, React.Dispatch<Action>]>([

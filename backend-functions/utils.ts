@@ -5,6 +5,8 @@ import {
   Move,
   CombinationEntry,
   Player,
+  PlayerEntity,
+  PlayerEntry,
 } from "./interfaces";
 import { validate } from "uuid";
 import { Chess } from "chess.js";
@@ -28,6 +30,31 @@ export const toCombinationFromEntity = (
     description: object.description,
   };
   return combination;
+};
+
+export const toPlayerFromEntity = (object: PlayerEntity): Player => {
+  const player: Player = {
+    id: object.rowKey,
+    firstName: object.firstName,
+    lastName: object.lastName,
+    fullName: object.fullName,
+    dateOfBirth: new Date(object.dateOfBirth),
+    placeOfBirth: object.placeOfBirth,
+    playerAvatarURL: object.playerAvatarURL,
+  };
+  return player;
+};
+
+export const toPlayerEntry = (object: any): PlayerEntry => {
+  const newPlayer: PlayerEntry = {
+    firstName: parseName(object.firstName),
+    lastName: parseName(object.lastName),
+    fullName: parseName(object.fullName),
+    dateOfBirth: parseDate(object.dateOfBirth),
+    placeOfBirth: object.placeOfBirth,
+    playerAvatarURL: object.playerAvatarURL,
+  };
+  return newPlayer;
 };
 
 const parseMoves = (moves: any): Move[] => {
@@ -66,7 +93,7 @@ const parsePlayer = (player: any): Player => {
     lastName: parseName(player.lastName),
     fullName: parseName(player.fullName),
     playerAvatarURL: player.playerAvatarURL,
-    dateOfBirth: player.dateOfBirth,
+    dateOfBirth: parseDate(player.dateOfBirth),
     placeOfBirth: player.placeOfBirth,
   };
 };
@@ -94,6 +121,17 @@ export const parseUUID = (uuid: any): string => {
     throw new Error(`Incorrect or missing id: ${uuid}.`);
   }
   return uuid;
+};
+
+const parseDate = (date: any): Date => {
+  if (date && !isDate(date)) {
+    throw new Error("Incorrect date format: " + date);
+  }
+  return date;
+};
+
+const isDate = (date: string): boolean => {
+  return Boolean(Date.parse(date));
 };
 
 const isString = (text: any): text is string => {

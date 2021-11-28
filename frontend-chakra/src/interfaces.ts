@@ -2,20 +2,25 @@ export type Player = {
   id: string;
   firstName: string;
   lastName: string;
-  dateOfBirth?: string;
-  placeOfBirth?: string;
   fullName: string;
+  dateOfBirth?: Date;
+  placeOfBirth?: string;
+  avatar?: string;
 };
 
-export enum Direction {
-  Left,
-  Right,
-}
+export type PlayerEntry = {
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  dateOfBirth?: Date;
+  placeOfBirth?: string;
+  avatar?: string;
+};
 
 export type Game = {
   id: string;
   pgn: string;
-  date?: string;
+  date?: Date;
   whitePlayer: Player;
   whitePlayerId: string;
   blackPlayer: Player;
@@ -33,11 +38,11 @@ export type Combination = {
   description?: string;
 };
 
-export type EditCombinationRequest = {
+export type CombinationEntry = {
   game: Game;
   moves: Move[];
   description?: string;
-}
+};
 
 export type Move = {
   annotation: string;
@@ -46,3 +51,8 @@ export type Move = {
   sign: string;
   fen: string;
 };
+
+export enum Direction {
+  Left,
+  Right,
+}
