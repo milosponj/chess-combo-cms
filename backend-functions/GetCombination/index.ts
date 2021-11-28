@@ -21,8 +21,9 @@ const httpTrigger: AzureFunction = async function (
   } catch (e) {
     if (e.statusCode === 404) {
       context.res = { status: 404, body: e.message };
+    } else {
+      context.res = { status: 400, body: e.message };
     }
-    context.res = { status: 400, body: e.message };
   }
 };
 
