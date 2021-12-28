@@ -81,12 +81,13 @@ export const Players = () => {
                           <Td>{player.fullName}</Td>
                           <Td>
                             {player.dateOfBirth
-                              ? new Date(player.dateOfBirth).toDateString()
+                              ? new Date(player.dateOfBirth)
+                                  .toDateString()
                               : null}
                           </Td>
                           <Td>{player.placeOfBirth}</Td>
                           <Td>
-                            {player.avatar ? (
+                            {player.hasAvatar ? (
                               <Tag size="lg" colorScheme="teal">
                                 <Icon as={CheckIcon} />
                               </Tag>

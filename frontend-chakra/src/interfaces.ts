@@ -3,18 +3,9 @@ export type Player = {
   firstName: string;
   lastName: string;
   fullName: string;
-  dateOfBirth?: Date;
+  dateOfBirth?: string;
   placeOfBirth?: string;
-  avatar?: string;
-};
-
-export type PlayerEntry = {
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  dateOfBirth?: Date;
-  placeOfBirth?: string;
-  avatar?: string;
+  hasAvatar: boolean;
 };
 
 export type Game = {

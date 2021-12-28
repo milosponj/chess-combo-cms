@@ -20,6 +20,7 @@ const initialState: State = {
         firstName: "",
         lastName: "",
         fullName: "",
+        hasAvatar: false
       },
       whitePlayerId: "",
       blackPlayer: {
@@ -27,6 +28,7 @@ const initialState: State = {
         firstName: "",
         lastName: "",
         fullName: "",
+        hasAvatar: false
       },
       blackPlayerId: "",
     },
@@ -46,11 +48,9 @@ const initialState: State = {
     firstName: "",
     lastName: "",
     fullName: "",
-    dateOfBirth: undefined,
-    placeOfBirth: "",
-    avatar: "",
+    hasAvatar: false,
   },
-  players: []
+  players: [],
 };
 
 export const StateContext = createContext<[State, React.Dispatch<Action>]>([

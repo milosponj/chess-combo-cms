@@ -4,7 +4,6 @@ import {
   Combination,
   CombinationEntry,
   Player,
-  PlayerEntry,
 } from "../interfaces";
 
 export const getCombo = (id: string) => {
@@ -32,12 +31,24 @@ export const getPlayers = () => {
   return request.then((response) => response.data);
 };
 
-export const addPlayer = (newObject: PlayerEntry) => {
-  const request = axios.post(`${apiBaseUrl}/players`, newObject);
+export const addPlayer = (form: FormData) => {
+  const request = axios({
+    method: "post",
+    url: `${apiBaseUrl}/players`,
+    data: form,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
   return request.then((response) => response.data);
 };
 
-export const updatePlayer = (id: string, updatedObject: PlayerEntry) => {
-  const request = axios.put(`${apiBaseUrl}/players/${id}`, updatedObject);
+export const updatePlayer = (id: string, form: FormData) => {
+  const request = axios({
+    method: "put",
+    url: `${apiBaseUrl}/players/${id}`,
+    data: form,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
   return request.then((response) => response.data);
 };
