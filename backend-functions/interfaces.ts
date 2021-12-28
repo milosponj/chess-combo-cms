@@ -1,5 +1,3 @@
-import { Url } from "url";
-
 export interface ComboStyle {
   background: string;
   pieces: string;
@@ -58,8 +56,8 @@ export interface PlayerEntity {
   firstName: string;
   lastName: string;
   fullName: string;
-  playerAvatarURL?: Url;
-  dateOfBirth?: Date;
+  hasAvatar: boolean;
+  dateOfBirth?: string;
   placeOfBirth?: string;
 }
 
@@ -67,7 +65,7 @@ export interface PlayerEntry {
   firstName: string;
   lastName: string;
   fullName: string;
-  playerAvatarURL?: Url;
+  hasAvatar: boolean;
   dateOfBirth?: Date;
   placeOfBirth?: string;
 }
@@ -77,7 +75,7 @@ export interface Player {
   firstName: string;
   lastName: string;
   fullName: string;
-  playerAvatarURL?: Url;
+  hasAvatar: boolean;
   dateOfBirth?: Date;
   placeOfBirth?: string;
 }

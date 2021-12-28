@@ -1,3 +1,4 @@
+import parseMultipartFormData from "@anzp/azure-function-multipart";
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { PlayerEntity, PlayerEntry } from "../interfaces";
 import { updatePlayer } from "../services/playerService";
@@ -8,14 +9,14 @@ const httpTrigger: AzureFunction = async function (
   req: HttpRequest
 ): Promise<void> {
   try {
-    if (!req.body) {
-      throw new Error("Request body is not defined.");
-    }
+    const { fields, files } = await parseMultipartFormData(req);
+    const file = files.find((file) => file.fieldname === "avatar");
     const id: string = parseUUID(req.params.id);
-    const player: PlayerEntry = toPlayerEntry(req.body);
+    const player: PlayerEntry = toPlayerEntry(fields);
     const playerEntity: PlayerEntity = {
       ...player,
-      dateOfBirth: new Date(player.dateOfBirth),
+      hasAvatar: file ? true : false,
+      dateOfBirth: player.dateOfBirth ? player.dateOfBirth.toString() : "",
       partitionKey: "DefaultPartitionKey",
       rowKey: id,
     };

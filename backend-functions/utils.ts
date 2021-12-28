@@ -10,6 +10,7 @@ import {
 } from "./interfaces";
 import { validate } from "uuid";
 import { Chess } from "chess.js";
+import { ParsedField } from "@anzp/azure-function-multipart/dist/types/parsed-field.type";
 
 export const toCombinationEntry = (object: any): CombinationEntry => {
   const newEntry: CombinationEntry = {
@@ -40,20 +41,32 @@ export const toPlayerFromEntity = (object: PlayerEntity): Player => {
     fullName: object.fullName,
     dateOfBirth: new Date(object.dateOfBirth),
     placeOfBirth: object.placeOfBirth,
-    playerAvatarURL: object.playerAvatarURL,
+    hasAvatar: object.hasAvatar,
   };
   return player;
 };
 
-export const toPlayerEntry = (object: any): PlayerEntry => {
-  const newPlayer: PlayerEntry = {
-    firstName: parseName(object.firstName),
-    lastName: parseName(object.lastName),
-    fullName: parseName(object.fullName),
-    dateOfBirth: parseDate(object.dateOfBirth),
-    placeOfBirth: object.placeOfBirth,
-    playerAvatarURL: object.playerAvatarURL,
-  };
+export const toPlayerEntry = (entryFields: ParsedField[]): PlayerEntry => {
+  const newPlayer: PlayerEntry = {firstName: "", lastName: "", fullName: "", hasAvatar: false}
+  entryFields.map((field) => {
+    switch (field.fieldname) {
+      case "fullName":
+        newPlayer.fullName = parseName(field.value);
+        break;
+      case "lastName":
+        newPlayer.lastName = parseName(field.value);
+        break;
+      case "firstName":
+        newPlayer.firstName = parseName(field.value);
+        break;
+      case "dateOfBirth":
+        newPlayer.dateOfBirth = parseDate(field.value);
+        break;
+      case "place":
+        newPlayer.placeOfBirth = field.value;
+        break;
+    }
+  });
   return newPlayer;
 };
 
@@ -92,7 +105,7 @@ const parsePlayer = (player: any): Player => {
     firstName: parseName(player.firstName),
     lastName: parseName(player.lastName),
     fullName: parseName(player.fullName),
-    playerAvatarURL: player.playerAvatarURL,
+    hasAvatar: player.hasAvatar,
     dateOfBirth: parseDate(player.dateOfBirth),
     placeOfBirth: player.placeOfBirth,
   };
