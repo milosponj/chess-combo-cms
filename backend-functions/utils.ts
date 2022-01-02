@@ -62,7 +62,7 @@ export const toPlayerEntry = (entryFields: ParsedField[]): PlayerEntry => {
       case "dateOfBirth":
         newPlayer.dateOfBirth = parseDate(field.value);
         break;
-      case "place":
+      case "placeOfBirth":
         newPlayer.placeOfBirth = field.value;
         break;
       case "hasAvatar":
