@@ -65,6 +65,9 @@ export const toPlayerEntry = (entryFields: ParsedField[]): PlayerEntry => {
       case "place":
         newPlayer.placeOfBirth = field.value;
         break;
+      case "hasAvatar":
+        newPlayer.hasAvatar = field.value;
+        break;
     }
   });
   return newPlayer;

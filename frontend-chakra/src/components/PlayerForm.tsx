@@ -61,9 +61,9 @@ export const PlayerForm = ({ player, onSubmit }: Props) => {
   const validate = (): Boolean => {
     setIsValidating(true);
     if (
-      firstName.length < 2 ||
-      lastName.length < 2 ||
-      !isExtensionPng(avatarData.type)
+      firstName.length < 2 || lastName.length < 2 || avatarData
+        ? !isExtensionPng(avatarData.type)
+        : false
     ) {
       return false;
     }
@@ -84,6 +84,9 @@ export const PlayerForm = ({ player, onSubmit }: Props) => {
       data.append("placeOfBirth", placeOfBirth);
       if (avatarData) {
         data.append("avatar", avatarData);
+      }
+      if (player.hasAvatar || avatarData) {
+        data.append("hasAvatar", "true");
       }
       onSubmit(data);
     }
