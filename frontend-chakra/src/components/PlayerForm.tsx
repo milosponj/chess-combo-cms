@@ -53,18 +53,18 @@ export const PlayerForm = ({ player, onSubmit }: Props) => {
       setIsFirstNameInvalid(firstName.length < 2);
       setIsLastNameInvalid(lastName.length < 2);
       if (avatarData) {
-        setIsPictureExtensionInvalid(isExtensionPng(avatarData.type));
+        setIsPictureExtensionInvalid(!isExtensionPng(avatarData.type));
       }
     }
   }, [firstName, lastName, avatarData, isValidating]);
 
   const validate = (): Boolean => {
+    const isAvatarInvalid = avatarData
+      ? !isExtensionPng(avatarData.type)
+      : false;
+
     setIsValidating(true);
-    if (
-      firstName.length < 2 || lastName.length < 2 || avatarData
-        ? !isExtensionPng(avatarData.type)
-        : false
-    ) {
+    if (firstName.length < 2 || lastName.length < 2 || isAvatarInvalid) {
       return false;
     }
     return true;
@@ -194,6 +194,7 @@ export const PlayerForm = ({ player, onSubmit }: Props) => {
                     aria-label="remove file"
                     onClick={removeFile}
                     icon={<CloseIcon />}
+                    isDisabled={!avatarData}
                   />
                 }
               />
