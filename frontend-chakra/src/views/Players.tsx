@@ -19,7 +19,7 @@ import {
 import SidebarWithHeader from "../layout";
 import { Player } from "../interfaces";
 import { CheckIcon, EditIcon, SmallCloseIcon } from "@chakra-ui/icons";
-import { setPlayers, useStateValue } from "../state";
+import { setNotification, setPlayers, useStateValue } from "../state";
 import { useHistory } from "react-router";
 import { getPlayers } from "../services/api";
 
@@ -33,9 +33,19 @@ export const Players = () => {
         dispatch(setPlayers(playersFromApi));
       } catch (e) {
         console.error(e);
+        dispatch(
+          setNotification({
+            status: "error",
+            message: "Problem with fetching. Is API available?",
+          })
+        );
       }
     };
     fetchPlayers();
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    dispatch(setNotification({ message: "" }));
   }, [dispatch]);
 
   const editPlayer = async (id: string) => {
@@ -49,6 +59,11 @@ export const Players = () => {
   return (
     <ChakraProvider theme={theme}>
       <SidebarWithHeader>
+        <Flex justify="left">
+          <Button mb={2} width="100px" bgColor="black" onClick={addNewPlayer}>
+            Add New
+          </Button>
+        </Flex>
         <SimpleGrid
           flex="1"
           gap="4"
@@ -56,11 +71,6 @@ export const Players = () => {
           alignItems="flex-start"
         >
           <Box p={["6", "8"]} className="combo-box" h="100%" w="100%">
-            <Flex justify="left">
-              <Button mb={2} bgColor="black" onClick={addNewPlayer}>
-                Add New
-              </Button>
-            </Flex>
             <Table variant="unstyled" w="100%">
               <Thead>
                 <Tr p="2px">
@@ -81,8 +91,7 @@ export const Players = () => {
                           <Td>{player.fullName}</Td>
                           <Td>
                             {player.dateOfBirth
-                              ? new Date(player.dateOfBirth)
-                                  .toDateString()
+                              ? new Date(player.dateOfBirth).toDateString()
                               : null}
                           </Td>
                           <Td>{player.placeOfBirth}</Td>

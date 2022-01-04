@@ -6,9 +6,11 @@ import { PlayerForm } from "../components/PlayerForm";
 import { Player } from "../interfaces";
 import { addPlayer } from "../services/api";
 import { useHistory } from "react-router";
+import { setNotification, useStateValue } from "../state";
 
 export const PlayerCreate = () => {
   const history = useHistory();
+  const [, dispatch] = useStateValue();
 
   const addNewPlayer = async (playerData: FormData) => {
     try {
@@ -16,6 +18,9 @@ export const PlayerCreate = () => {
       history.push("/players");
     } catch (e) {
       console.log(e);
+      dispatch(
+        setNotification({ status: "error", message: "Problem with saving new player. Is API available?" })
+      );
     }
   };
 

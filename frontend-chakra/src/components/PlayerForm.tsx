@@ -12,12 +12,14 @@ import {
   InputRightElement,
   IconButton,
   FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
 import { Player } from "../interfaces";
 import { useHistory } from "react-router";
 import { CloseIcon } from "@chakra-ui/icons";
 import { avatarBaseUrl } from "../constants";
 import { isExtensionPng } from "../utils";
+import { useStateValue } from "../state";
 
 interface Props {
   player: Player;
@@ -25,6 +27,7 @@ interface Props {
 }
 
 export const PlayerForm = ({ player, onSubmit }: Props) => {
+  const [{ notification }] = useStateValue();
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [dateOfBirth, setDateOfBirth] = React.useState(
@@ -39,6 +42,7 @@ export const PlayerForm = ({ player, onSubmit }: Props) => {
     React.useState(false);
   const [isValidating, setIsValidating] = React.useState(false);
   const history = useHistory();
+  const toast = useToast();
 
   React.useEffect(() => {
     setFirstName(player.firstName);
@@ -47,6 +51,17 @@ export const PlayerForm = ({ player, onSubmit }: Props) => {
     setPlaceOfBirth(player.placeOfBirth ? player.placeOfBirth : "");
     setAvatarURL(player.hasAvatar ? `${avatarBaseUrl}/${player.id}.png` : "");
   }, [player]);
+
+  React.useEffect(() => {
+    if (notification.message && notification.status) {
+      toast({
+        title: notification.message,
+        status: notification.status,
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [notification, toast]);
 
   React.useEffect(() => {
     if (isValidating) {
@@ -206,9 +221,9 @@ export const PlayerForm = ({ player, onSubmit }: Props) => {
             ) : null}
           </FormControl>
           {avatarData ? (
-            <Image src={URL.createObjectURL(avatarData)} />
+            <Image maxH="250px" src={URL.createObjectURL(avatarData)} />
           ) : avatarURL ? (
-            <Image src={avatarURL} />
+            <Image maxH="250px" src={avatarURL} />
           ) : (
             ""
           )}

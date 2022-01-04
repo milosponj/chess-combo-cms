@@ -3,7 +3,7 @@ import { theme } from "../theme/theme";
 import { ChakraProvider } from "@chakra-ui/react";
 import SidebarWithHeader from "../layout";
 import { PlayerForm } from "../components/PlayerForm";
-import { setPlayer, useStateValue } from "../state";
+import { setNotification, setPlayer, useStateValue } from "../state";
 import { useHistory, useParams } from "react-router";
 import { getPlayer, updatePlayer } from "../services/api";
 
@@ -20,15 +20,27 @@ export const PlayerEdit = () => {
       };
       fetchPlayer();
     } catch (e) {
-      console.log(e);
+      dispatch(
+        setNotification({ status: "error", message: "Problem with fetching. Is API available?" })
+      );
     }
   }, [dispatch, params.id]);
 
   const editPlayer = async (playerData: FormData) => {
     try {
       await updatePlayer(player.id, playerData);
+      dispatch(
+        setNotification({ status: "success", message: "Player updated!" })
+      );
     } catch (e) {
       console.log(e);
+      dispatch(
+        setNotification({
+          status: "error",
+          message:
+            "Something went wrong while updating player, please try again!",
+        })
+      );
     }
     history.replace("/players");
   };

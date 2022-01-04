@@ -47,3 +47,10 @@ export enum Direction {
   Left,
   Right,
 }
+
+export type Notification = {
+  status?: Status;
+  message: string;
+};
+
+export type Status = "info" | "warning" | "error" | "success";
