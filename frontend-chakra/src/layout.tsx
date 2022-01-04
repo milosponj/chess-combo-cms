@@ -24,11 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import {
-  FiHome,
   FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
   FiMenu,
   FiChevronDown,
   FiUsers,
@@ -43,12 +39,8 @@ interface LinkItemProps {
   relativeUrl: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, relativeUrl: "/" },
   { name: "Players", icon: FiUsers, relativeUrl: "/players" },
   { name: "Combinations", icon: FiTrendingUp, relativeUrl: "/combinations" },
-  { name: "Explore", icon: FiCompass, relativeUrl: "/" },
-  { name: "Favourites", icon: FiStar, relativeUrl: "/" },
-  { name: "Settings", icon: FiSettings, relativeUrl: "/" },
 ];
 
 export default function SidebarWithHeader({
