@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { Combination } from "../interfaces";
+import { Combination, Player, Notification } from "../interfaces";
 import { Action } from "./reducer";
 
 export type State = {
   combo: Combination;
   combinations: Combination[];
+  player: Player;
+  players: Player[];
+  notification: Notification;
 };
 
 const initialState: State = {
@@ -18,6 +21,7 @@ const initialState: State = {
         firstName: "",
         lastName: "",
         fullName: "",
+        hasAvatar: false,
       },
       whitePlayerId: "",
       blackPlayer: {
@@ -25,6 +29,7 @@ const initialState: State = {
         firstName: "",
         lastName: "",
         fullName: "",
+        hasAvatar: false,
       },
       blackPlayerId: "",
     },
@@ -38,7 +43,16 @@ const initialState: State = {
       },
     ],
   },
-  combinations: []
+  combinations: [],
+  player: {
+    id: "",
+    firstName: "",
+    lastName: "",
+    fullName: "",
+    hasAvatar: false,
+  },
+  players: [],
+  notification: { message: "" },
 };
 
 export const StateContext = createContext<[State, React.Dispatch<Action>]>([

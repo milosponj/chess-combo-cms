@@ -22,14 +22,12 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
 import {
-  FiHome,
   FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
   FiMenu,
   FiChevronDown,
+  FiUsers,
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
@@ -38,13 +36,11 @@ import { ChessComboLogo } from "./components/ChessComboLogo";
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  relativeUrl: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome },
-  { name: "Combinations", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  { name: "Players", icon: FiUsers, relativeUrl: "/players" },
+  { name: "Combinations", icon: FiTrendingUp, relativeUrl: "/combinations" },
 ];
 
 export default function SidebarWithHeader({
@@ -102,7 +98,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} route={link.relativeUrl}>
           {link.name}
         </NavItem>
       ))}
@@ -113,10 +109,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
   icon: IconType;
   children: ReactText;
+  route: string;
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, route, ...rest }: NavItemProps) => {
   return (
-    <Link href="#" style={{ textDecoration: "none" }}>
+    <Link as={RouterLink} to={route} style={{ textDecoration: "none" }}>
       <Flex
         align="center"
         p="4"

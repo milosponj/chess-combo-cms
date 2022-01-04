@@ -15,7 +15,7 @@ export interface CombinationEntry {
 
 export interface CombinationEntity {
   partitionKey: string;
-  rowKey: string
+  rowKey: string;
   game: string;
   description?: string;
   moves: string;
@@ -50,12 +50,32 @@ export interface Move {
   fen: string;
 }
 
+export interface PlayerEntity {
+  partitionKey: string;
+  rowKey: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  hasAvatar: boolean;
+  dateOfBirth?: string;
+  placeOfBirth?: string;
+}
+
+export interface PlayerEntry {
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  hasAvatar: boolean;
+  dateOfBirth?: Date;
+  placeOfBirth?: string;
+}
+
 export interface Player {
   id: string;
   firstName: string;
   lastName: string;
   fullName: string;
-  playerAvatarURL?: string;
-  dateOfBirth?: string;
+  hasAvatar: boolean;
+  dateOfBirth?: Date;
   placeOfBirth?: string;
 }

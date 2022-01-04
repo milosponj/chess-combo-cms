@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { Combination, CombinationEntity } from "../interfaces";
-import { getCombination } from "../services/combinationService";
-import { parseUUID, toCombinationFromEntity } from "../utils";
+import { Player, PlayerEntity } from "../interfaces";
+import { getPlayer } from "../services/playerService";
+import { parseUUID, toPlayerFromEntity } from "../utils";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -9,11 +9,11 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     const id: string = parseUUID(req.params.id);
-    const result: CombinationEntity = await getCombination(
+    const result: PlayerEntity = await getPlayer(
       "DefaultPartitionKey",
       id
     );
-    const response: Combination = toCombinationFromEntity(result);
+    const response: Player = toPlayerFromEntity(result);
     context.res = {
       status: 200,
       body: response,

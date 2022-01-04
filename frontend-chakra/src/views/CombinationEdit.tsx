@@ -18,12 +18,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import SidebarWithHeader from "../layout";
 import { ChessboardComponent } from "../components/Chessboard";
 import { setCombo, useStateValue } from "../state";
-import {
-  Combination,
-  Direction,
-  EditCombinationRequest,
-  Move,
-} from "../interfaces";
+import { Combination, CombinationEntry, Direction, Move } from "../interfaces";
 import React, { useEffect, useState } from "react";
 import Chess from "chess.js";
 import { useParams } from "react-router";
@@ -135,10 +130,10 @@ export const CombinationEdit = () => {
   const sendEditComboRequest = async (ev: any) => {
     ev.preventDefault();
     try {
-      const requestBody: EditCombinationRequest = {
+      const requestBody: CombinationEntry = {
         game: combo.game,
         description: comboDescription,
-        moves: selectedMoves
+        moves: selectedMoves,
       };
       await updateCombo(combo.id, requestBody);
       history.push("/");
@@ -191,7 +186,10 @@ export const CombinationEdit = () => {
             </Box>
             {combo.id && moves[0] ? (
               <div>
-                <Box p={["6", "6"]} className="combo-box" h="600px">
+                <Box p={["6", "6"]} className="combo-box" h="650px">
+                  <Text w="100%" m={2} mb={0}>
+                    Selected Moves
+                  </Text>
                   <Box
                     m={2}
                     w="100%"

@@ -5,9 +5,12 @@ import {
   Move,
   CombinationEntry,
   Player,
+  PlayerEntity,
+  PlayerEntry,
 } from "./interfaces";
 import { validate } from "uuid";
 import { Chess } from "chess.js";
+import { ParsedField } from "@anzp/azure-function-multipart/dist/types/parsed-field.type";
 
 export const toCombinationEntry = (object: any): CombinationEntry => {
   const newEntry: CombinationEntry = {
@@ -28,6 +31,46 @@ export const toCombinationFromEntity = (
     description: object.description,
   };
   return combination;
+};
+
+export const toPlayerFromEntity = (object: PlayerEntity): Player => {
+  const player: Player = {
+    id: object.rowKey,
+    firstName: object.firstName,
+    lastName: object.lastName,
+    fullName: object.fullName,
+    dateOfBirth: new Date(object.dateOfBirth),
+    placeOfBirth: object.placeOfBirth,
+    hasAvatar: object.hasAvatar,
+  };
+  return player;
+};
+
+export const toPlayerEntry = (entryFields: ParsedField[]): PlayerEntry => {
+  const newPlayer: PlayerEntry = {firstName: "", lastName: "", fullName: "", hasAvatar: false}
+  entryFields.map((field) => {
+    switch (field.fieldname) {
+      case "fullName":
+        newPlayer.fullName = parseName(field.value);
+        break;
+      case "lastName":
+        newPlayer.lastName = parseName(field.value);
+        break;
+      case "firstName":
+        newPlayer.firstName = parseName(field.value);
+        break;
+      case "dateOfBirth":
+        newPlayer.dateOfBirth = parseDate(field.value);
+        break;
+      case "placeOfBirth":
+        newPlayer.placeOfBirth = field.value;
+        break;
+      case "hasAvatar":
+        newPlayer.hasAvatar = field.value;
+        break;
+    }
+  });
+  return newPlayer;
 };
 
 const parseMoves = (moves: any): Move[] => {
@@ -65,8 +108,8 @@ const parsePlayer = (player: any): Player => {
     firstName: parseName(player.firstName),
     lastName: parseName(player.lastName),
     fullName: parseName(player.fullName),
-    playerAvatarURL: player.playerAvatarURL,
-    dateOfBirth: player.dateOfBirth,
+    hasAvatar: player.hasAvatar,
+    dateOfBirth: parseDate(player.dateOfBirth),
     placeOfBirth: player.placeOfBirth,
   };
 };
@@ -94,6 +137,17 @@ export const parseUUID = (uuid: any): string => {
     throw new Error(`Incorrect or missing id: ${uuid}.`);
   }
   return uuid;
+};
+
+const parseDate = (date: any): Date => {
+  if (date && !isDate(date)) {
+    throw new Error("Incorrect date format: " + date);
+  }
+  return date;
+};
+
+const isDate = (date: string): boolean => {
+  return Boolean(Date.parse(date));
 };
 
 const isString = (text: any): text is string => {
