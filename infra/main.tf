@@ -78,8 +78,6 @@ resource "azurerm_function_app" "function" {
         APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.cms_ai.instrumentation_key
         WEBSITE_RUN_FROM_PACKAGE = "1"        
         AzureWebJobsStorage = azurerm_storage_account.storage.primary_connection_string
-        TableStorageConnection = azurerm_storage_account.storage.primary_connection_string
-        PackPartitionKey = "DefaultPartitionKey"
         WEBSITE_NODE_DEFAULT_VERSION = "~14"
     }
 }

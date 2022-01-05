@@ -44,7 +44,7 @@ export const addAvatar = async (
   if (!file) return [];
 
   const blobServiceClient = BlobServiceClient.fromConnectionString(
-    "UseDevelopmentStorage=true"
+    process.env["AzureWebJobsStorage"]
   );
   const containerClient: ContainerClient =
     blobServiceClient.getContainerClient("avatars");

@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           cd $GITHUB_WORKSPACE/frontend
-          npm run build
+          npm run build:dev
       - name: Upload app
         uses: actions/upload-artifact@v2
         with:
