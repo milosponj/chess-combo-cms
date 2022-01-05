@@ -1,0 +1,4 @@
+    resource_group_name  = "rg-terraformstate"
+    storage_account_name = "terraformstoragecombo"
+    container_name       = "cms-state"
+    key                  = "dev.terraform.tfstate"

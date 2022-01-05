@@ -1,0 +1,5 @@
+resource_group_name = "rg-chesscombocms"
+storage_account_name = "chesscombocmsstorage"
+static_storage_account_name = "cmsstatic"
+env = "dev"
+location = "westeurope"

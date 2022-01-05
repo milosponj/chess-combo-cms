@@ -1,10 +1,6 @@
 #Set up remote state
 terraform {
-  backend "azurerm" {
-    resource_group_name  = "rg-terraformstate"
-    storage_account_name = "terraformstoragecombo"
-    container_name       = "cms-state"
-    key                  = "dev.terraform.tfstate"
+  backend "azurerm" {  
   }
 }
 
@@ -31,12 +27,61 @@ resource "azurerm_storage_account" "storage" {
   }
 }
 
+resource "azurerm_storage_table" "combinationstable" {
+  name                 = "combinations"
+  storage_account_name = azurerm_storage_account.storage.name
+}
 
-resource "azurerm_application_insights" "cms_app_insights" {
-  name                = "cms-app-insights-${var.env}"
+resource "azurerm_storage_table" "playerstable" {
+  name                 = "players"
+  storage_account_name = azurerm_storage_account.storage.name
+}
+
+resource "azurerm_storage_table" "gamestable" {
+  name                 = "games"
+  storage_account_name = azurerm_storage_account.storage.name
+}
+
+resource "azurerm_app_service_plan" "app_service_plan" {
+    name = "cms-service-plan-${var.env}"
+    resource_group_name = "${azurerm_resource_group.rg.name}"
+    location = "${var.location}"
+    kind = "FunctionApp"
+    sku {
+        tier = "Dynamic"
+        size = "Y1"
+    }
+}
+
+resource "azurerm_application_insights" "cms_ai" {
+  name                = "cms-${var.env}-appinsights"
   location            = var.location
   resource_group_name = "${azurerm_resource_group.rg.name}"
   application_type    = "web"
+}
+
+resource "azurerm_function_app" "function" {
+    name = "cms-function-${var.env}"
+    location = "${var.location}"
+    resource_group_name = "${azurerm_resource_group.rg.name}"
+    app_service_plan_id = "${azurerm_app_service_plan.app_service_plan.id}"
+    
+    storage_account_name = "${azurerm_storage_account.storage.name}"
+    storage_account_access_key = "${azurerm_storage_account.storage.primary_access_key}"
+
+    version = "~3"
+
+    app_settings = {
+        https_only = true
+        FUNCTIONS_WORKER_RUNTIME = "node"
+        FUNCTION_APP_EDIT_MODE = "readonly"
+        APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.cms_ai.instrumentation_key
+        WEBSITE_RUN_FROM_PACKAGE = "1"        
+        AzureWebJobsStorage = azurerm_storage_account.storage.primary_connection_string
+        TableStorageConnection = azurerm_storage_account.storage.primary_connection_string
+        PackPartitionKey = "DefaultPartitionKey"
+        WEBSITE_NODE_DEFAULT_VERSION = "~14"
+    }
 }
 
 
@@ -53,34 +98,5 @@ resource "azurerm_storage_account" "static_storage" {
   
   tags = {
     environment = "${var.env}"
-  }
-}
-
-resource "azurerm_app_service_plan" "cms_app_service_plan" {
-  name                = "cms-service-plan-${var.env}"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-
-  sku {
-    tier = "${var.app_service_plan_tier}"
-    size = "${var.app_service_plan_size}"
-  }
-}
-
-resource "azurerm_app_service" "chess_combo_cms_api" {
-  name                = "combo-cms-api-${var.env}"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  app_service_plan_id = azurerm_app_service_plan.cms_app_service_plan.id
-
-  site_config {
-    use_32_bit_worker_process = true
-    always_on = false
-    dotnet_framework_version = "v4.0"
-  }
-
-  app_settings = {
-    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.cms_app_insights.instrumentation_key
-    ConnectionStrings__DefaultConnection = "${var.cms_connection_string}"
   }
 }

@@ -1,0 +1,69 @@
+name: Frontend deploy
+
+on:
+  push:
+    paths:
+      - "frontend/**"
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@main
+
+      - name: "Login via Azure CLI"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.DEV_RBAC_AZURE }}
+
+      - name: Install npm packages
+        shell: bash
+        run: |
+          cd $GITHUB_WORKSPACE/frontend
+          npm install
+      - name: Build app
+        shell: bash
+        run: |
+          cd $GITHUB_WORKSPACE/frontend
+          npm run build:dev
+      - name: Upload app
+        uses: actions/upload-artifact@v2
+        with:
+          name: app
+          path: frontend/build
+
+  deploy_to_dev:
+    needs: build-and-publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download app
+        uses: actions/download-artifact@v2
+        with:
+          name: app
+          path: frontend/build
+
+      - name: Login to Azure
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.DEV_RBAC_AZURE }}
+
+      - name: Publish app
+        uses: Azure/cli@v1.0.0
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az storage blob upload-batch -s $GITHUB_WORKSPACE/frontend/build -d \$web --account-name cmsstatic
+      # - name: Purge CDN
+      #   run: az cdn endpoint purge -n dev-cms-endpoint --profile-name cdncmsdev --content-paths "/*" --resource-group rg-chesscombocms-dev --no-wait
+
+      # Azure logout
+      - name: logout
+        run: |
+          az logout
+        if: always()
