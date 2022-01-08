@@ -31,15 +31,24 @@ export interface Combination {
 export interface Game {
   id: string;
   pgn: string;
-  whitePlayerId: string;
   whitePlayer: Player;
-  blackPlayerId: string;
   blackPlayer: Player;
-  date?: String;
-  description?: string;
-  chessBaseUrl?: string;
-  title?: string;
+  date?: Date;
   venue?: string;
+  event: string;
+  title?: string;
+}
+
+export interface GameEntity {
+  partitionKey: string;
+  rowKey: string;
+  pgn: string;
+  whitePlayer: Player;
+  blackPlayer: Player;
+  date?: string;
+  venue?: string;
+  event: string;
+  title?: string;
 }
 
 export interface Move {
