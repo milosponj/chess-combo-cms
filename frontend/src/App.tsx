@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { CombinationEdit } from "./views/CombinationEdit";
 import { Combinations } from "./views/Combinations";
+import { Games } from "./views/Games";
 import { PlayerCreate } from "./views/PlayerCreate";
 import { PlayerEdit } from "./views/PlayerEdit";
 import { Players } from "./views/Players";
@@ -21,6 +22,7 @@ const App: React.FC = () => {
           <Route path={`/players`} component={Players} />
           <Route path={`/combinations/:id`} component={CombinationEdit} />
           <Route path={`/combinations`} render={() => <Combinations />} />
+          <Route path={`/games`} render={() => <Games />} />
           <Redirect from={`/`} to="/combinations" />
         </Switch>
       </Router>

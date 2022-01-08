@@ -29,6 +29,7 @@ import {
   FiChevronDown,
   FiUsers,
 } from "react-icons/fi";
+import {FaChess} from "react-icons/fa";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
 import { ChessComboLogo } from "./components/ChessComboLogo";
@@ -41,6 +42,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Players", icon: FiUsers, relativeUrl: "/players" },
   { name: "Combinations", icon: FiTrendingUp, relativeUrl: "/combinations" },
+  { name: "Games", icon: FaChess, relativeUrl: "/games" },
 ];
 
 export default function SidebarWithHeader({
