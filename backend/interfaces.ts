@@ -43,8 +43,8 @@ export interface GameEntity {
   partitionKey: string;
   rowKey: string;
   pgn: string;
-  whitePlayer: Player;
-  blackPlayer: Player;
+  whitePlayer: string;
+  blackPlayer: string;
   date?: string;
   venue?: string;
   event: string;

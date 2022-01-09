@@ -83,8 +83,8 @@ export const toGameFromEntity = (object: GameEntity): Game => {
   const game: Game = {
     id: object.rowKey,
     pgn: object.pgn,
-    whitePlayer: object.whitePlayer,
-    blackPlayer: object.blackPlayer,
+    whitePlayer:  JSON.parse(object.whitePlayer),
+    blackPlayer: JSON.parse(object.blackPlayer),
     event: object.event,
     date: new Date(object.date),
     venue: object.venue,
