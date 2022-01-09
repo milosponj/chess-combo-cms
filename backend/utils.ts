@@ -8,6 +8,7 @@ import {
   PlayerEntity,
   PlayerEntry,
   GameEntity,
+  GameEntry,
 } from "./interfaces";
 import { validate } from "uuid";
 import { Chess } from "chess.js";
@@ -79,11 +80,24 @@ export const toPlayerEntry = (entryFields: ParsedField[]): PlayerEntry => {
   return newPlayer;
 };
 
+export const toGameEntry = (object: any): GameEntry => {
+  const newEntry: GameEntry = {
+    whitePlayer: parsePlayer(object.whitePlayer),
+    blackPlayer: parsePlayer(object.blackPlayer),
+    venue: object.venue,
+    event: object.event,
+    date: object.date,
+    title: object.title,
+    pgn: parsePGN(object.pgn),
+  };
+  return newEntry;
+};
+
 export const toGameFromEntity = (object: GameEntity): Game => {
   const game: Game = {
     id: object.rowKey,
     pgn: object.pgn,
-    whitePlayer:  JSON.parse(object.whitePlayer),
+    whitePlayer: JSON.parse(object.whitePlayer),
     blackPlayer: JSON.parse(object.blackPlayer),
     event: object.event,
     date: new Date(object.date),
