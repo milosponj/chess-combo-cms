@@ -13,13 +13,10 @@ export type Game = {
   pgn: string;
   date?: Date;
   whitePlayer: Player;
-  whitePlayerId: string;
   blackPlayer: Player;
-  blackPlayerId: string;
-  description?: string;
-  chessBaseUrl?: string;
   title?: string;
   venue?: string;
+  event?: string;
 };
 
 export type Combination = {

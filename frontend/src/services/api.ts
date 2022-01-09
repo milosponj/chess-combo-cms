@@ -3,6 +3,7 @@ import { apiBaseUrl } from "../constants";
 import {
   Combination,
   CombinationEntry,
+  Game,
   Player,
 } from "../interfaces";
 
@@ -50,5 +51,10 @@ export const updatePlayer = (id: string, form: FormData) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 
+  return request.then((response) => response.data);
+};
+
+export const getGames = () => {
+  const request = axios.get<Game[]>(`${apiBaseUrl}/games`);
   return request.then((response) => response.data);
 };

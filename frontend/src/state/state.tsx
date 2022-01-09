@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { Combination, Player, Notification } from "../interfaces";
+import { Combination, Player, Notification, Game } from "../interfaces";
 import { Action } from "./reducer";
 
 export type State = {
@@ -7,6 +7,7 @@ export type State = {
   combinations: Combination[];
   player: Player;
   players: Player[];
+  games: Game[];
   notification: Notification;
 };
 
@@ -23,7 +24,6 @@ const initialState: State = {
         fullName: "",
         hasAvatar: false,
       },
-      whitePlayerId: "",
       blackPlayer: {
         id: "",
         firstName: "",
@@ -31,7 +31,6 @@ const initialState: State = {
         fullName: "",
         hasAvatar: false,
       },
-      blackPlayerId: "",
     },
     moves: [
       {
@@ -52,6 +51,7 @@ const initialState: State = {
     hasAvatar: false,
   },
   players: [],
+  games: [],
   notification: { message: "" },
 };
 

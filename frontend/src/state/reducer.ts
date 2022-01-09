@@ -1,5 +1,5 @@
 import { State } from "./state";
-import { Combination, Player, Notification } from "../interfaces";
+import { Combination, Player, Notification, Game } from "../interfaces";
 
 export type Action =
   | {
@@ -17,6 +17,10 @@ export type Action =
   | {
       type: "SET_PLAYERS";
       payload: Player[];
+    }
+  | {
+      type: "SET_GAMES";
+      payload: Game[];
     }
   | {
       type: "SET_NOTIFICATION";
@@ -51,6 +55,13 @@ export const setPlayers = (players: Player[]): Action => {
   };
 };
 
+export const setGames = (games: Game[]): Action => {
+  return {
+    type: "SET_GAMES",
+    payload: games,
+  };
+};
+
 export const setNotification = (notification: Notification): Action => {
   return {
     type: "SET_NOTIFICATION",
@@ -79,6 +90,11 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         players: [...action.payload],
+      };
+    case "SET_GAMES":
+      return {
+        ...state,
+        games: [...action.payload],
       };
     case "SET_NOTIFICATION":
       return {
