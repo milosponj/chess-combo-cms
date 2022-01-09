@@ -15,12 +15,25 @@ import {
   Button,
 } from "@chakra-ui/react";
 import SidebarWithHeader from "../layout";
-import { useStateValue } from "../state";
+import { setGames, useStateValue } from "../state";
 import { Game } from "../interfaces";
 import { EditIcon } from "@chakra-ui/icons";
+import { getGames } from "../services/api";
 
 export const Games = () => {
-  const [{ games }] = useStateValue();
+  const [{ games }, dispatch] = useStateValue();
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const gamesFromApi: Game[] = await getGames();
+        dispatch(setGames(gamesFromApi));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
 
   const editGame = (id: string) => {
     console.log("editing game logic", id);

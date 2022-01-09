@@ -14,8 +14,8 @@ import {
 } from "@chakra-ui/react";
 import SidebarWithHeader from "../layout";
 import { Combination } from "../interfaces";
-import { setCombo, useStateValue } from "../state";
-import { getCombo } from "../services/api";
+import { setCombinations, setCombo, useStateValue } from "../state";
+import { getCombo, getCombos } from "../services/api";
 import { ChessboardComponent } from "../components/Chessboard";
 import { EditIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router";
@@ -23,6 +23,18 @@ import { useHistory } from "react-router";
 export const Combinations = () => {
   const [{ combinations }, dispatch] = useStateValue();
   const history = useHistory();
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const combosFromApi: Combination[] = await getCombos();
+        dispatch(setCombinations(combosFromApi));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
 
   const editCombo = async (id: string) => {
     try {
