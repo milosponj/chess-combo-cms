@@ -26,6 +26,7 @@ import { getPlayers } from "../services/api";
 export const Players = () => {
   const [{ players }, dispatch] = useStateValue();
   const history = useHistory();
+
   React.useEffect(() => {
     const fetchPlayers = async () => {
       try {
