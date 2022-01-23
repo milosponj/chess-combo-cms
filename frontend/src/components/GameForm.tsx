@@ -38,9 +38,9 @@ export const GameForm = ({ onSubmit }: Props) => {
   });
   const [pgn, setPgn] = React.useState(game.pgn);
   const [title, setTitle] = React.useState(game.title);
-  const [venue, setVenue] = React.useState(game.venue);
+  const [venue, setVenue] = React.useState(game.venue || "");
   const [date, setDate] = React.useState(game.date || "");
-  const [eventName, setEventName] = React.useState(game.event);
+  const [eventName, setEventName] = React.useState(game.event || "");
   const [selectItems, setSelectItems] = React.useState<Item[]>([]);
   const history = useHistory();
   const [isWhitePlayerSelected, setIsWhitePlayerSelected] =
@@ -70,9 +70,9 @@ export const GameForm = ({ onSubmit }: Props) => {
     });
     setPgn(game.pgn);
     setTitle(game.title);
-    setVenue(game.venue);
+    setVenue(game.venue || "");
     setDate(game.date || "");
-    setEventName(game.event);
+    setEventName(game.event || "");
   }, [game]);
 
   React.useEffect(() => {
@@ -133,7 +133,6 @@ export const GameForm = ({ onSubmit }: Props) => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
-      console.log(players);
       const whitePlayer: any = players.find(
         (p) => p.id === whitePlayerItem.value
       );

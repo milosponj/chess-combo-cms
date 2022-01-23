@@ -92,7 +92,7 @@ export const Games = () => {
                               Game <br />
                               {game.title}
                             </Box>
-                            {game.date && game.venue ? (
+                            {game.date || game.venue ? (
                               <Box className="td-box">
                                 Date & Place <br />
                                 {game.date
