@@ -83,7 +83,9 @@ export const Combinations = () => {
                             </Box>
                             <Box className="td-box">
                               {combo.game.date
-                                ? new Date(combo.game.date).toDateString()
+                                ? new Date(combo.game.date)
+                                    .toDateString()
+                                    .slice(4, 15)
                                 : null}
                             </Box>
                           </Td>

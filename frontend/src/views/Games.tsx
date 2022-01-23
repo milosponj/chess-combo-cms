@@ -96,7 +96,9 @@ export const Games = () => {
                               <Box className="td-box">
                                 Date & Place <br />
                                 {game.date
-                                  ? `${new Date(game.date).getFullYear()}, `
+                                  ? `${new Date(game.date)
+                                      .toDateString()
+                                      .slice(4, 15)}, `
                                   : null}
                                 {game.venue}
                               </Box>

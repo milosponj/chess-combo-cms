@@ -92,7 +92,9 @@ export const Players = () => {
                           <Td>{player.fullName}</Td>
                           <Td>
                             {player.dateOfBirth
-                              ? new Date(player.dateOfBirth).toDateString()
+                              ? new Date(player.dateOfBirth)
+                                  .toDateString()
+                                  .slice(4, 15)
                               : null}
                           </Td>
                           <Td>{player.placeOfBirth}</Td>

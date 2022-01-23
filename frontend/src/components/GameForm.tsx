@@ -38,7 +38,7 @@ export const GameForm = ({ onSubmit }: Props) => {
   const [pgn, setPgn] = React.useState(game.pgn);
   const [title, setTitle] = React.useState(game.title);
   const [venue, setVenue] = React.useState(game.venue);
-  const [date, setDate] = React.useState(game.date);
+  const [date, setDate] = React.useState(game.date || "");
   const [eventName, setEventName] = React.useState(game.event);
   const [selectItems, setSelectItems] = React.useState<Item[]>([]);
   const history = useHistory();
@@ -70,7 +70,7 @@ export const GameForm = ({ onSubmit }: Props) => {
     setPgn(game.pgn);
     setTitle(game.title);
     setVenue(game.venue);
-    setDate(game.date);
+    setDate(game.date || "");
     setEventName(game.event);
   }, [game]);
 
@@ -176,7 +176,7 @@ export const GameForm = ({ onSubmit }: Props) => {
               value={whitePlayerItem}
               onChange={(value) => handleWhitePlayerSelection(value)}
             />
-            {isWhitePlayerSelected ? null : (
+            {isWhitePlayerSelected || (
               <FormErrorMessage>
                 White Player must be selected.
               </FormErrorMessage>
@@ -194,7 +194,7 @@ export const GameForm = ({ onSubmit }: Props) => {
               value={blackPlayerItem}
               onChange={(value) => handleBlackPlayerSelection(value)}
             />
-            {isBlackPlayerSelected ? null : (
+            {isBlackPlayerSelected || (
               <FormErrorMessage>
                 Black Player must be selected.
               </FormErrorMessage>
@@ -209,7 +209,7 @@ export const GameForm = ({ onSubmit }: Props) => {
               onChange={(ev) => setPgn(ev.currentTarget.value)}
               value={pgn}
             ></Textarea>
-            {isPgnPopulated ? null : (
+            {isPgnPopulated || (
               <FormErrorMessage>
                 PGN is required, and must be at least two char long.
               </FormErrorMessage>
@@ -246,11 +246,12 @@ export const GameForm = ({ onSubmit }: Props) => {
           <FormControl id="date">
             <FormLabel>Date</FormLabel>
             <Input
-              value={date}
+              value={date.slice(0, 10)}
               onChange={(event) => setDate(event.currentTarget.value)}
               borderRadius={0}
               mb={3}
               placeholder="Date"
+              type="date"
             />
           </FormControl>
           <FormControl id="event">
