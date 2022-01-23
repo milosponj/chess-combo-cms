@@ -7,31 +7,38 @@ export type State = {
   combinations: Combination[];
   player: Player;
   players: Player[];
+  game: Game;
   games: Game[];
   notification: Notification;
+};
+
+export const initialGameState: Game = {
+  id: "",
+  whitePlayer: {
+    id: "",
+    firstName: "",
+    lastName: "",
+    fullName: "",
+    hasAvatar: false,
+  },
+  blackPlayer: {
+    id: "",
+    firstName: "",
+    lastName: "",
+    fullName: "",
+    hasAvatar: false,
+  },
+  pgn: "",
+  title: "",
+  venue: "",
+  date: "",
+  event: "",
 };
 
 const initialState: State = {
   combo: {
     id: "",
-    game: {
-      id: "",
-      pgn: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-      whitePlayer: {
-        id: "",
-        firstName: "",
-        lastName: "",
-        fullName: "",
-        hasAvatar: false,
-      },
-      blackPlayer: {
-        id: "",
-        firstName: "",
-        lastName: "",
-        fullName: "",
-        hasAvatar: false,
-      },
-    },
+    game: { ...initialGameState },
     moves: [
       {
         number: 0,
@@ -43,6 +50,7 @@ const initialState: State = {
     ],
   },
   combinations: [],
+  game: initialGameState,
   player: {
     id: "",
     firstName: "",
@@ -51,6 +59,7 @@ const initialState: State = {
     hasAvatar: false,
   },
   players: [],
+
   games: [],
   notification: { message: "" },
 };

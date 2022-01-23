@@ -19,6 +19,10 @@ export type Action =
       payload: Player[];
     }
   | {
+      type: "SET_GAME";
+      payload: { game: Game };
+    }
+  | {
       type: "SET_GAMES";
       payload: Game[];
     }
@@ -52,6 +56,13 @@ export const setPlayers = (players: Player[]): Action => {
   return {
     type: "SET_PLAYERS",
     payload: players,
+  };
+};
+
+export const setGame = (game: Game): Action => {
+  return {
+    type: "SET_GAME",
+    payload: { game },
   };
 };
 
@@ -90,6 +101,11 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         players: [...action.payload],
+      };
+    case "SET_GAME":
+      return {
+        ...state,
+        game: { ...action.payload.game },
       };
     case "SET_GAMES":
       return {

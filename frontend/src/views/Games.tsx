@@ -15,13 +15,15 @@ import {
   Button,
 } from "@chakra-ui/react";
 import SidebarWithHeader from "../layout";
-import { setGames, useStateValue } from "../state";
+import { initialGameState, setGame, setGames, useStateValue } from "../state";
 import { Game } from "../interfaces";
 import { EditIcon } from "@chakra-ui/icons";
 import { getGames } from "../services/api";
+import { useHistory } from "react-router-dom";
 
 export const Games = () => {
   const [{ games }, dispatch] = useStateValue();
+  const history = useHistory();
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -36,11 +38,12 @@ export const Games = () => {
   }, [dispatch]);
 
   const editGame = (id: string) => {
-    console.log("editing game logic", id);
+    history.push(`/games/${id}`);
   };
 
   const addNewGame = () => {
-    console.log("adding game logic");
+    dispatch(setGame(initialGameState));
+    history.push(`/games/add`);
   };
 
   return (
@@ -85,15 +88,19 @@ export const Games = () => {
                             </Box>
                           </Td>
                           <Td textAlign="right">
-                            <Box borderWidth={0} className="td-box">
-                              {game.title} <br />
-                              {game.date
-                                ? new Date(game.date).getFullYear()
-                                : null}
-                              {", "}
-                              {game.venue}
-                              <></>
+                            <Box className="td-box">
+                              Game <br />
+                              {game.title}
                             </Box>
+                            {game.date && game.venue ? (
+                              <Box className="td-box">
+                                Date & Place <br />
+                                {game.date
+                                  ? `${new Date(game.date).getFullYear()}, `
+                                  : null}
+                                {game.venue}
+                              </Box>
+                            ) : null}
                           </Td>
                           <Td>{game.event}</Td>
                           <Td p={3} textAlign="center">

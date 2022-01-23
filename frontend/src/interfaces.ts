@@ -11,10 +11,20 @@ export type Player = {
 export type Game = {
   id: string;
   pgn: string;
+  date?: string;
+  whitePlayer: Player;
+  blackPlayer: Player;
+  title: string;
+  venue?: string;
+  event?: string;
+};
+
+export type GameEntry = {
+  pgn: string;
   date?: Date;
   whitePlayer: Player;
   blackPlayer: Player;
-  title?: string;
+  title: string;
   venue?: string;
   event?: string;
 };

@@ -4,6 +4,7 @@ import {
   Combination,
   CombinationEntry,
   Game,
+  GameEntry,
   Player,
 } from "../interfaces";
 
@@ -57,4 +58,10 @@ export const updatePlayer = (id: string, form: FormData) => {
 export const getGames = () => {
   const request = axios.get<Game[]>(`${apiBaseUrl}/games`);
   return request.then((response) => response.data);
+};
+
+export const addGame = (newObject: GameEntry) => {
+  const request = axios.post(`${apiBaseUrl}/games/`, newObject);
+  return request
+    .then((response) => response.data)
 };
