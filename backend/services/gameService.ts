@@ -34,3 +34,12 @@ export const addGame = async (game: GameEntity) => {
   const response = await client.createEntity(game);
   return response;
 };
+
+export const updateGame = async (game: GameEntity) => {
+  const client = TableClient.fromConnectionString(
+    process.env["AzureWebJobsStorage"],
+    "games"
+  );
+  const response = await client.updateEntity(game);
+  return response;
+};
