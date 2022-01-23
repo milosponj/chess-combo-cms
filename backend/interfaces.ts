@@ -28,16 +28,6 @@ export interface Combination {
   moves: Move[];
 }
 
-export interface GameEntry {
-  pgn: string;
-  whitePlayer: Player;
-  blackPlayer: Player;
-  date?: Date;
-  venue?: string;
-  event: string;
-  title?: string;
-}
-
 export interface GameEntity {
   partitionKey: string;
   rowKey: string;
@@ -47,7 +37,17 @@ export interface GameEntity {
   date?: string;
   venue?: string;
   event: string;
-  title?: string;
+  title: string;
+}
+
+export interface GameEntry {
+  pgn: string;
+  whitePlayer: Player;
+  blackPlayer: Player;
+  date?: Date;
+  venue?: string;
+  event: string;
+  title: string;
 }
 
 export interface Game {

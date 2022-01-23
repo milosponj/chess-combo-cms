@@ -1,6 +1,18 @@
 import { TableClient } from "@azure/data-tables";
 import { GameEntity } from "../interfaces";
 
+export const getGame = async (
+  partitionKey: string,
+  rowKey: string
+): Promise<GameEntity> => {
+  const client = TableClient.fromConnectionString(
+    process.env["AzureWebJobsStorage"],
+    "games"
+  );
+  const response = await client.getEntity<GameEntity>(partitionKey, rowKey);
+  return response;
+};
+
 export const getGames = async () => {
   const client = TableClient.fromConnectionString(
     process.env["AzureWebJobsStorage"],
