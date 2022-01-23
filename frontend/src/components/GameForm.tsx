@@ -11,10 +11,11 @@ import {
   FormErrorMessage,
   useToast,
 } from "@chakra-ui/react";
-import { GameEntry } from "../interfaces";
+import { GameEntry, Player } from "../interfaces";
 import { useHistory } from "react-router";
-import { setNotification, useStateValue } from "../state";
+import { setNotification, setPlayers, useStateValue } from "../state";
 import { ChakraStylesConfig, Select } from "chakra-react-select";
+import { getPlayers } from "../services/api";
 
 interface Item {
   value: string;
@@ -87,14 +88,24 @@ export const GameForm = ({ onSubmit }: Props) => {
   }, [notification, toast, dispatch]);
 
   React.useEffect(() => {
-    if (players) {
+    const fetchPlayers = async () => {
+      try {
+        const playersFromApi: Player[] = await getPlayers();
+        dispatch(setPlayers(playersFromApi));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    if (players?.length) {
       const playerOptions = players.map((player) => ({
         value: player.id,
         label: player.fullName,
       }));
       setSelectItems(playerOptions);
+    } else {
+      fetchPlayers();
     }
-  }, [players]);
+  }, [players, dispatch]);
 
   React.useEffect(() => {
     if (isValidating) {
@@ -122,6 +133,7 @@ export const GameForm = ({ onSubmit }: Props) => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
+      console.log(players);
       const whitePlayer: any = players.find(
         (p) => p.id === whitePlayerItem.value
       );
