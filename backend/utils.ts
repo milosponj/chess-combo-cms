@@ -7,6 +7,8 @@ import {
   Player,
   PlayerEntity,
   PlayerEntry,
+  GameEntity,
+  GameEntry,
 } from "./interfaces";
 import { validate } from "uuid";
 import { Chess } from "chess.js";
@@ -47,7 +49,12 @@ export const toPlayerFromEntity = (object: PlayerEntity): Player => {
 };
 
 export const toPlayerEntry = (entryFields: ParsedField[]): PlayerEntry => {
-  const newPlayer: PlayerEntry = {firstName: "", lastName: "", fullName: "", hasAvatar: false}
+  const newPlayer: PlayerEntry = {
+    firstName: "",
+    lastName: "",
+    fullName: "",
+    hasAvatar: false,
+  };
   entryFields.map((field) => {
     switch (field.fieldname) {
       case "fullName":
@@ -73,6 +80,33 @@ export const toPlayerEntry = (entryFields: ParsedField[]): PlayerEntry => {
   return newPlayer;
 };
 
+export const toGameEntry = (object: any): GameEntry => {
+  const newEntry: GameEntry = {
+    whitePlayer: parsePlayer(object.whitePlayer),
+    blackPlayer: parsePlayer(object.blackPlayer),
+    venue: object.venue,
+    event: object.event,
+    date: object.date,
+    title: object.title,
+    pgn: parsePGN(object.pgn),
+  };
+  return newEntry;
+};
+
+export const toGameFromEntity = (object: GameEntity): Game => {
+  const game: Game = {
+    id: object.rowKey,
+    pgn: object.pgn,
+    whitePlayer: JSON.parse(object.whitePlayer),
+    blackPlayer: JSON.parse(object.blackPlayer),
+    event: object.event,
+    date: new Date(object.date),
+    venue: object.venue,
+    title: object.title,
+  };
+  return game;
+};
+
 const parseMoves = (moves: any): Move[] => {
   if (!moves || !moves[0]) {
     throw new Error("Moves are not selected.");
@@ -88,14 +122,11 @@ const parseGame = (game: any): Game => {
     id: parseUUID(game.id),
     pgn: parsePGN(game.pgn),
     blackPlayer: parsePlayer(game.blackPlayer),
-    blackPlayerId: parseUUID(game.blackPlayerId),
     whitePlayer: parsePlayer(game.whitePlayer),
-    whitePlayerId: parseUUID(game.whitePlayerId),
     date: game.date,
-    description: game.description,
-    chessBaseUrl: game.chessBaseUrl,
     title: game.title,
     venue: game.venue,
+    event: game.event,
   };
 };
 

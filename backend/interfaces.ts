@@ -28,18 +28,37 @@ export interface Combination {
   moves: Move[];
 }
 
+export interface GameEntity {
+  partitionKey: string;
+  rowKey: string;
+  pgn: string;
+  whitePlayer: string;
+  blackPlayer: string;
+  date?: string;
+  venue?: string;
+  event: string;
+  title: string;
+}
+
+export interface GameEntry {
+  pgn: string;
+  whitePlayer: Player;
+  blackPlayer: Player;
+  date?: Date;
+  venue?: string;
+  event: string;
+  title: string;
+}
+
 export interface Game {
   id: string;
   pgn: string;
-  whitePlayerId: string;
   whitePlayer: Player;
-  blackPlayerId: string;
   blackPlayer: Player;
-  date?: String;
-  description?: string;
-  chessBaseUrl?: string;
-  title?: string;
+  date?: Date;
   venue?: string;
+  event: string;
+  title?: string;
 }
 
 export interface Move {
@@ -79,3 +98,5 @@ export interface Player {
   dateOfBirth?: Date;
   placeOfBirth?: string;
 }
+
+export const partitionKey: string = "DefaultPartitionKey";

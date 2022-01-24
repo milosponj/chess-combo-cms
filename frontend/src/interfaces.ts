@@ -11,15 +11,22 @@ export type Player = {
 export type Game = {
   id: string;
   pgn: string;
+  date?: string;
+  whitePlayer: Player;
+  blackPlayer: Player;
+  title: string;
+  venue?: string;
+  event?: string;
+};
+
+export type GameEntry = {
+  pgn: string;
   date?: Date;
   whitePlayer: Player;
-  whitePlayerId: string;
   blackPlayer: Player;
-  blackPlayerId: string;
-  description?: string;
-  chessBaseUrl?: string;
-  title?: string;
+  title: string;
   venue?: string;
+  event?: string;
 };
 
 export type Combination = {

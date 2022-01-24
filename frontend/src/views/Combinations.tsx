@@ -25,7 +25,7 @@ export const Combinations = () => {
   const history = useHistory();
 
   React.useEffect(() => {
-    const fetchCombinations = async () => {
+    const fetchData = async () => {
       try {
         const combosFromApi: Combination[] = await getCombos();
         dispatch(setCombinations(combosFromApi));
@@ -33,7 +33,7 @@ export const Combinations = () => {
         console.error(e);
       }
     };
-    fetchCombinations();
+    fetchData();
   }, [dispatch]);
 
   const editCombo = async (id: string) => {
@@ -83,7 +83,9 @@ export const Combinations = () => {
                             </Box>
                             <Box className="td-box">
                               {combo.game.date
-                                ? new Date(combo.game.date).toDateString()
+                                ? new Date(combo.game.date)
+                                    .toDateString()
+                                    .slice(4, 15)
                                 : null}
                             </Box>
                           </Td>

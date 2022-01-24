@@ -1,11 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import {
-  CombinationEntity,
-  CombinationEntry,
-  partitionKey,
-} from "../interfaces";
-import { updateCombination } from "../services/combinationService";
-import { parseUUID, toCombinationEntry } from "../utils";
+import { GameEntity, GameEntry, partitionKey } from "../interfaces";
+import { updateGame } from "../services/gameService";
+import { parseUUID, toGameEntry } from "../utils";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -16,16 +12,17 @@ const httpTrigger: AzureFunction = async function (
       throw new Error("Request body is not defined.");
     }
     const id: string = parseUUID(req.params.id);
-    const combination: CombinationEntry = toCombinationEntry(req.body);
-    const combinationEntity: CombinationEntity = {
-      ...combination,
-      moves: JSON.stringify(combination.moves),
-      game: JSON.stringify(combination.game),
+    const game: GameEntry = toGameEntry(req.body);
+    const gameEntity: GameEntity = {
+      ...game,
+      blackPlayer: JSON.stringify(game.blackPlayer),
+      whitePlayer: JSON.stringify(game.whitePlayer),
+      date: game.date ? game.date.toString() : "",
       partitionKey,
       rowKey: id,
     };
 
-    await updateCombination(combinationEntity);
+    await updateGame(gameEntity);
     context.res = { status: 200, body: `Resource updated successfully!` };
   } catch (e) {
     context.res = { status: e.statusCode === 404 ? 404 : 400, body: e.message };

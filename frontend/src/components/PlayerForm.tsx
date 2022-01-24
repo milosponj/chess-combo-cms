@@ -194,11 +194,11 @@ export const PlayerForm = ({ player, onSubmit }: Props) => {
             <FormLabel>Avatar</FormLabel>
             <InputGroup>
               <Input
-                p={2}
+                p="4px"
+                mb="8px"
                 id={"myAvatarFile"}
                 onChange={(event) => fileSelectedHandler(event)}
                 borderRadius={0}
-                mb={3}
                 placeholder="Avatar"
                 type="file"
                 accept=".png"
@@ -221,9 +221,13 @@ export const PlayerForm = ({ player, onSubmit }: Props) => {
             ) : null}
           </FormControl>
           {avatarData ? (
-            <Image maxH="250px" src={URL.createObjectURL(avatarData)} />
+            <Image
+              p="10px"
+              maxH="240px"
+              src={URL.createObjectURL(avatarData)}
+            />
           ) : avatarURL ? (
-            <Image maxH="250px" src={avatarURL} />
+            <Image maxH="240px" src={avatarURL} />
           ) : (
             ""
           )}

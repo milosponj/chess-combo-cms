@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { PlayerEntity, PlayerEntry } from "../interfaces";
+import { partitionKey, PlayerEntity, PlayerEntry } from "../interfaces";
 import { v4 as uuid } from "uuid";
 import { toPlayerEntry } from "../utils";
 import { addAvatar, addPlayer } from "../services/playerService";
@@ -18,7 +18,7 @@ const httpTrigger: AzureFunction = async function (
       dateOfBirth: playerEntry.dateOfBirth
         ? playerEntry.dateOfBirth.toString()
         : "",
-      partitionKey: "DefaultPartitionKey",
+      partitionKey,
       rowKey: uuid(),
       hasAvatar: file ? true : false,
     };

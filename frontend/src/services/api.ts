@@ -3,6 +3,8 @@ import { apiBaseUrl } from "../constants";
 import {
   Combination,
   CombinationEntry,
+  Game,
+  GameEntry,
   Player,
 } from "../interfaces";
 
@@ -50,5 +52,25 @@ export const updatePlayer = (id: string, form: FormData) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 
+  return request.then((response) => response.data);
+};
+
+export const getGames = () => {
+  const request = axios.get<Game[]>(`${apiBaseUrl}/games`);
+  return request.then((response) => response.data);
+};
+
+export const addGame = (newObject: GameEntry) => {
+  const request = axios.post(`${apiBaseUrl}/games/`, newObject);
+  return request.then((response) => response.data);
+};
+
+export const getGame = (id: string) => {
+  const request = axios.get<Game>(`${apiBaseUrl}/games/${id}`);
+  return request.then((response) => response.data);
+};
+
+export const updateGame = (id: string, updatedObject: GameEntry) => {
+  const request = axios.put(`${apiBaseUrl}/games/${id}`, updatedObject);
   return request.then((response) => response.data);
 };

@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { partitionKey, Player, PlayerEntity } from "../interfaces";
-import { getPlayer } from "../services/playerService";
-import { parseUUID, toPlayerFromEntity } from "../utils";
+import { Game, GameEntity, partitionKey } from "../interfaces";
+import { getGame } from "../services/gameService";
+import { parseUUID, toGameFromEntity } from "../utils";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -9,8 +9,8 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     const id: string = parseUUID(req.params.id);
-    const result: PlayerEntity = await getPlayer(partitionKey, id);
-    const response: Player = toPlayerFromEntity(result);
+    const result: GameEntity = await getGame(partitionKey, id);
+    const response: Game = toGameFromEntity(result);
     context.res = {
       status: 200,
       body: response,
