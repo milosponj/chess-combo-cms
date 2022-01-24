@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { Game, GameEntity } from "../interfaces";
+import { Game, GameEntity, partitionKey } from "../interfaces";
 import { getGame } from "../services/gameService";
 import { parseUUID, toGameFromEntity } from "../utils";
 
@@ -9,18 +9,14 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     const id: string = parseUUID(req.params.id);
-    const result: GameEntity = await getGame("DefaultPartitionKey", id);
+    const result: GameEntity = await getGame(partitionKey, id);
     const response: Game = toGameFromEntity(result);
     context.res = {
       status: 200,
       body: response,
     };
   } catch (e) {
-    if (e.statusCode === 404) {
-      context.res = { status: 404, body: e.message };
-    } else {
-      context.res = { status: 400, body: e.message };
-    }
+    context.res = { status: e.statusCode === 404 ? 404 : 400, body: e.message };
   }
 };
 

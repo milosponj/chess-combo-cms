@@ -1,6 +1,6 @@
 import parseMultipartFormData from "@anzp/azure-function-multipart";
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { PlayerEntity, PlayerEntry } from "../interfaces";
+import { partitionKey, PlayerEntity, PlayerEntry } from "../interfaces";
 import { addAvatar, updatePlayer } from "../services/playerService";
 import { parseUUID, toPlayerEntry } from "../utils";
 
@@ -17,7 +17,7 @@ const httpTrigger: AzureFunction = async function (
       ...player,
       hasAvatar: file ? true : player.hasAvatar,
       dateOfBirth: player.dateOfBirth ? player.dateOfBirth.toString() : "",
-      partitionKey: "DefaultPartitionKey",
+      partitionKey,
       rowKey: id,
     };
 
@@ -28,10 +28,7 @@ const httpTrigger: AzureFunction = async function (
     await updatePlayer(playerEntity);
     context.res = { status: 200, body: `Resource updated successfully!` };
   } catch (e) {
-    if (e.statusCode === 404) {
-      context.res = { status: 404, body: e.message };
-    }
-    context.res = { status: 400, body: e.message };
+    context.res = { status: e.statusCode === 404 ? 404 : 400, body: e.message };
   }
 };
 

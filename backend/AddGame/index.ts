@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { GameEntity, GameEntry } from "../interfaces";
+import { GameEntity, GameEntry, partitionKey } from "../interfaces";
 import { v4 as uuid } from "uuid";
 import { addGame } from "../services/gameService";
 import { toGameEntry } from "../utils";
@@ -18,7 +18,7 @@ const httpTrigger: AzureFunction = async function (
       whitePlayer: JSON.stringify(gameEntry.whitePlayer),
       blackPlayer: JSON.stringify(gameEntry.blackPlayer),
       date: gameEntry.date ? gameEntry.date.toString() : "",
-      partitionKey: "DefaultPartitionKey",
+      partitionKey,
       rowKey: uuid(),
     };
 

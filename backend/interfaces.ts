@@ -98,3 +98,5 @@ export interface Player {
   dateOfBirth?: Date;
   placeOfBirth?: string;
 }
+
+export const partitionKey: string = "DefaultPartitionKey";

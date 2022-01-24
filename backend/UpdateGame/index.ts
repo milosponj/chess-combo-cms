@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { GameEntity, GameEntry } from "../interfaces";
+import { GameEntity, GameEntry, partitionKey } from "../interfaces";
 import { updateGame } from "../services/gameService";
 import { parseUUID, toGameEntry } from "../utils";
 
@@ -18,17 +18,14 @@ const httpTrigger: AzureFunction = async function (
       blackPlayer: JSON.stringify(game.blackPlayer),
       whitePlayer: JSON.stringify(game.whitePlayer),
       date: game.date ? game.date.toString() : "",
-      partitionKey: "DefaultPartitionKey",
+      partitionKey,
       rowKey: id,
     };
 
     await updateGame(gameEntity);
     context.res = { status: 200, body: `Resource updated successfully!` };
   } catch (e) {
-    if (e.statusCode === 404) {
-      context.res = { status: 404, body: e.message };
-    }
-    context.res = { status: 400, body: e.message };
+    context.res = { status: e.statusCode === 404 ? 404 : 400, body: e.message };
   }
 };
 

@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { toCombinationEntry } from "../utils";
 import { v4 as uuid } from "uuid";
-import { CombinationEntity, CombinationEntry } from "../interfaces";
+import { CombinationEntity, CombinationEntry, partitionKey } from "../interfaces";
 import { addCombination } from "../services/combinationService";
 
 const httpTrigger: AzureFunction = async function (
@@ -17,7 +17,7 @@ const httpTrigger: AzureFunction = async function (
       ...combinationEntry,
       moves: JSON.stringify(combinationEntry.moves),
       game: JSON.stringify(combinationEntry.game),
-      partitionKey: "DefaultPartitionKey",
+      partitionKey,
       rowKey: uuid(),
     };
 

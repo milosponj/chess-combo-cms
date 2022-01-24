@@ -1,5 +1,9 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { CombinationEntity, CombinationEntry } from "../interfaces";
+import {
+  CombinationEntity,
+  CombinationEntry,
+  partitionKey,
+} from "../interfaces";
 import { updateCombination } from "../services/combinationService";
 import { parseUUID, toCombinationEntry } from "../utils";
 
@@ -17,17 +21,14 @@ const httpTrigger: AzureFunction = async function (
       ...combination,
       moves: JSON.stringify(combination.moves),
       game: JSON.stringify(combination.game),
-      partitionKey: "DefaultPartitionKey",
+      partitionKey,
       rowKey: id,
     };
 
     await updateCombination(combinationEntity);
     context.res = { status: 200, body: `Resource updated successfully!` };
   } catch (e) {
-    if (e.statusCode === 404) {
-      context.res = { status: 404, body: e.message };
-    }
-    context.res = { status: 400, body: e.message };
+    context.res = { status: e.statusCode === 404 ? 404 : 400, body: e.message };
   }
 };
 

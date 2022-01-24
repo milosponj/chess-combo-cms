@@ -141,11 +141,11 @@ export const GameForm = ({ onSubmit }: Props) => {
       );
       if (whitePlayer.id && blackPlayer.id) {
         const requestBody: GameEntry = {
-          whitePlayer: { ...whitePlayer },
-          blackPlayer: { ...blackPlayer },
-          pgn: pgn,
-          title: title,
-          venue: venue,
+          whitePlayer,
+          blackPlayer,
+          pgn,
+          title,
+          venue,
           date: date ? new Date(date) : undefined,
           event: eventName,
         };
