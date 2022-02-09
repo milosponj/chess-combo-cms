@@ -34,6 +34,7 @@ interface LinkItemProps {
   icon: IconType;
   relativeUrl: string;
 }
+
 const LinkItems: Array<LinkItemProps> = [
   { name: "Players", icon: FiUsers, relativeUrl: "/players" },
   { name: "Games", icon: FaChess, relativeUrl: "/games" },
@@ -99,6 +100,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           {link.name}
         </NavItem>
       ))}
+      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+        {process.env.REACT_APP_ENVIRONMENT}
+      </Flex>
     </Box>
   );
 };
