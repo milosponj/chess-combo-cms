@@ -7,9 +7,6 @@
     "@chakra-ui/react": "^1.6.10",
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^10.4.9",
-    "@testing-library/user-event": "^12.8.3",
     "@types/chess.js": "^0.11.2",
     "@types/jest": "^25.2.3",
     "@types/node": "^12.20.33",
@@ -33,6 +30,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:dev": "env-cmd -f ./.env.dev npm run-script build && compress-cra",
+    "build:stage": "CI=false && env-cmd -f ./.env.stage npm run-script build && compress-cra",
+    "build:prod": "CI=false && env-cmd -f ./.env.prod npm run-script build && compress-cra",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -52,6 +52,11 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.1"
+    "@types/react-router-dom": "^5.3.1",
+    "compress-create-react-app": "^1.2.1",
+    "env-cmd": "^10.1.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^10.4.9",
+    "@testing-library/user-event": "^12.8.3"
   }
 }

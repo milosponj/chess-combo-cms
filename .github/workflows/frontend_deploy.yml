@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           cd $GITHUB_WORKSPACE/frontend
-          npm run build
+          npm run build:dev
       - name: Upload app
         uses: actions/upload-artifact@v2
         with:
@@ -58,7 +58,7 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az storage blob upload-batch -s $GITHUB_WORKSPACE/frontend/build -d \$web --account-name cmsstatic
+            az storage blob upload-batch -s $GITHUB_WORKSPACE/frontend/build -d \$web --account-name combocmsstaticdev
       # - name: Purge CDN
       #   run: az cdn endpoint purge -n dev-cms-endpoint --profile-name cdncmsdev --content-paths "/*" --resource-group rg-chesscombocms-dev --no-wait
 

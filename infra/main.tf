@@ -78,15 +78,14 @@ resource "azurerm_function_app" "function" {
         APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.cms_ai.instrumentation_key
         WEBSITE_RUN_FROM_PACKAGE = "1"        
         AzureWebJobsStorage = azurerm_storage_account.storage.primary_connection_string
-        TableStorageConnection = azurerm_storage_account.storage.primary_connection_string
-        PackPartitionKey = "DefaultPartitionKey"
+        ChessComboStaticStorage = "${var.chess_combo_static_storage_connection_string}"
         WEBSITE_NODE_DEFAULT_VERSION = "~14"
     }
 }
 
 
 resource "azurerm_storage_account" "static_storage" {
-  name                     = var.static_storage_account_name
+  name                     = "combocmsstatic${var.env}"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"

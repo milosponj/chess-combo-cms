@@ -44,14 +44,16 @@ export const addAvatar = async (
   if (!file) return [];
 
   const blobServiceClient = BlobServiceClient.fromConnectionString(
-    "UseDevelopmentStorage=true"
+    process.env["ChessComboStaticStorage"]
   );
   const containerClient: ContainerClient =
-    blobServiceClient.getContainerClient("avatars");
+    blobServiceClient.getContainerClient("images");
   await containerClient.createIfNotExists({
     access: "container",
   });
-  const blobClient = containerClient.getBlockBlobClient(`${playerId}.png`);
+  const blobClient = containerClient.getBlockBlobClient(
+    `players/${playerId}.png`
+  );
   const options = { blobHTTPHeaders: { blobContentType: "image/png" } };
   await blobClient.uploadData(file, options);
 };

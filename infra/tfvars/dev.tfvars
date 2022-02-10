@@ -1,5 +1,5 @@
 resource_group_name = "rg-chesscombocms"
 storage_account_name = "chesscombocmsstorage"
-static_storage_account_name = "cmsstatic"
 env = "dev"
 location = "westeurope"
+chess_combo_static_storage_connection_string = "DefaultEndpointsProtocol=https;AccountName=chesscombostaticdev;AccountKey=J46Wz55WjGhLQXKxY6wfoGtcntTjnEUpAnT4tH0a52DoIu/Af0K3616zyw9hTrqdQfPRP+qV6W3ROro+rJr+gg==;EndpointSuffix=core.windows.net"
