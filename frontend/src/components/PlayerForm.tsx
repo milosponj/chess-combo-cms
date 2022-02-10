@@ -17,7 +17,6 @@ import {
 import { Player } from "../interfaces";
 import { useHistory } from "react-router";
 import { CloseIcon } from "@chakra-ui/icons";
-import { avatarBaseUrl } from "../constants";
 import { isExtensionPng } from "../utils";
 import { useStateValue } from "../state";
 
@@ -49,7 +48,7 @@ export const PlayerForm = ({ player, onSubmit }: Props) => {
     setLastName(player.lastName);
     setDateOfBirth(player.dateOfBirth ? player.dateOfBirth.toString() : "");
     setPlaceOfBirth(player.placeOfBirth ? player.placeOfBirth : "");
-    setAvatarURL(player.hasAvatar ? `${avatarBaseUrl}/${player.id}.png` : "");
+    setAvatarURL(player.hasAvatar ? `${process.env.REACT_APP_AVATAR_BASE_URL}/${player.id}.png` : "");
   }, [player]);
 
   React.useEffect(() => {
