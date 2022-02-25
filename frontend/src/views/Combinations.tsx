@@ -11,11 +11,13 @@ import {
   Th,
   Td,
   IconButton,
+  Flex,
+  Button,
 } from "@chakra-ui/react";
 import SidebarWithHeader from "../layout";
 import { Combination } from "../interfaces";
-import { setCombinations, setCombo, useStateValue } from "../state";
-import { getCombo, getCombos } from "../services/api";
+import { initialComboState, setCombinations, setCombo, useStateValue } from "../state";
+import { getCombos } from "../services/api";
 import { ChessboardComponent } from "../components/Chessboard";
 import { EditIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router";
@@ -37,17 +39,22 @@ export const Combinations = () => {
   }, [dispatch]);
 
   const editCombo = async (id: string) => {
-    try {
-      const combinationFromApi: Combination = await getCombo(id);
-      dispatch(setCombo(combinationFromApi));
-    } catch (e) {
-      console.error(e);
-    }
     history.push(`/combinations/${id}`);
   };
+
+  const addNewCombo = () => {
+    dispatch(setCombo(initialComboState));
+    history.push(`/combinations/add`);
+  };
+
   return (
     <ChakraProvider theme={theme}>
       <SidebarWithHeader>
+        <Flex justify="left">
+          <Button mb={2} width="100px" bgColor="black" onClick={addNewCombo}>
+            Add New
+          </Button>
+        </Flex>
         <SimpleGrid
           flex="1"
           gap="4"

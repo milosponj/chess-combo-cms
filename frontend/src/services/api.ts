@@ -18,6 +18,11 @@ export const getCombos = () => {
   return request.then((response) => response.data);
 };
 
+export const addCombo = (newObject: CombinationEntry) => {
+  const request = axios.post(`${apiBaseUrl}/combinations/`, newObject);
+  return request.then((response) => response.data);
+};
+
 export const updateCombo = (id: string, updatedObject: CombinationEntry) => {
   const request = axios.put(`${apiBaseUrl}/combinations/${id}`, updatedObject);
   return request.then((response) => response.data);

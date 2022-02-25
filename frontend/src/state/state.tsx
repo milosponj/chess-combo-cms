@@ -35,21 +35,23 @@ export const initialGameState: Game = {
   event: "",
 };
 
+export const initialComboState: Combination = {
+  id: "",
+  game: { ...initialGameState },
+  moves: [
+    {
+      number: 0,
+      sign: "",
+      remark: "",
+      annotation: "",
+      fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+    },
+  ],
+};
+
 const initialState: State = {
-  combo: {
-    id: "",
-    game: { ...initialGameState },
-    moves: [
-      {
-        number: 0,
-        sign: "",
-        remark: "",
-        annotation: "",
-        fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-      },
-    ],
-  },
   combinations: [],
+  combo: initialComboState,
   game: initialGameState,
   player: {
     id: "",
