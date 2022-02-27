@@ -59,6 +59,7 @@ export const GameForm = ({ onSubmit }: Props) => {
       mb: "12px",
     }),
   };
+  
   React.useEffect(() => {
     setWhitePlayerItem({
       value: game.whitePlayer.id,

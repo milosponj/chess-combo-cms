@@ -5,6 +5,7 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
+import { CombinationCreate } from "./views/CombinationCreate";
 import { CombinationEdit } from "./views/CombinationEdit";
 import { Combinations } from "./views/Combinations";
 import { GameCreate } from "./views/GameCreate";
@@ -22,6 +23,7 @@ const App: React.FC = () => {
           <Route path={`/players/add`} component={PlayerCreate} />
           <Route path={`/players/:id`} component={PlayerEdit} />
           <Route path={`/players`} component={Players} />
+          <Route path={`/combinations/add`} component={CombinationCreate} />
           <Route path={`/combinations/:id`} component={CombinationEdit} />
           <Route path={`/combinations`} render={() => <Combinations />} />
           <Route path={`/games/add`} component={GameCreate} />

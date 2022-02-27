@@ -14,6 +14,7 @@ export const CustomRangeSlider: React.FC<Props> = ({
   setSliderValues,
 }: Props) => {
   const onSliderChange = (values: number[]) => {
+    console.log("values",values)
     setSliderValues({ min: values[0], max: values[1] });
   };
 
@@ -39,9 +40,9 @@ export const CustomRangeSlider: React.FC<Props> = ({
             <div
               ref={props.ref}
               style={{
-                height: "5px",
+                height: "1px",
                 width: "100%",
-                borderRadius: "4px",
+                borderRadius: "0px",
                 background: getTrackBackground({
                   values: [range.min, range.max],
                   colors: ["#666", "#e1c984", "#666"],
@@ -61,9 +62,10 @@ export const CustomRangeSlider: React.FC<Props> = ({
             {...props}
             style={{
               ...props.style,
-              height: "32px",
-              width: "15px",
+              height: "12px",
+              width: "12px",
               borderRadius: "0px",
+              borderWidth: "0px",
               backgroundColor: "white",
               display: "flex",
               justifyContent: "center",
@@ -75,7 +77,7 @@ export const CustomRangeSlider: React.FC<Props> = ({
                 position: "absolute",
                 top: "-36px",
                 color: "#fff",
-                fontSize: "14px",
+                fontSize: "12px",
                 padding: "4px",
                 borderRadius: "0px",
                 borderWidth: "1px",
@@ -87,8 +89,8 @@ export const CustomRangeSlider: React.FC<Props> = ({
             </div>
             <div
               style={{
-                height: "16px",
-                width: "5px",
+                height: "10px",
+                width: "10px",
                 backgroundColor: isDragged ? "#e1c984" : "#999",
               }}
             />
