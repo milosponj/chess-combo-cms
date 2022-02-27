@@ -14,7 +14,6 @@ export const CustomRangeSlider: React.FC<Props> = ({
   setSliderValues,
 }: Props) => {
   const onSliderChange = (values: number[]) => {
-    console.log("values",values)
     setSliderValues({ min: values[0], max: values[1] });
   };
 

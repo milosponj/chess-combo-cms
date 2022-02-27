@@ -33,7 +33,7 @@ export const PlayerEdit = () => {
         setNotification({ status: "success", message: "Player updated!" })
       );
     } catch (e) {
-      console.log(e);
+      console.error(e);
       dispatch(
         setNotification({
           status: "error",

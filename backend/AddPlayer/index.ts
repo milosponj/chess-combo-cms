@@ -29,7 +29,7 @@ const httpTrigger: AzureFunction = async function (
 
     context.res = { status: 201, body: `New player added.` };
   } catch (e) {
-    console.log(e);
+    console.error(e);
     context.res = { status: 400, body: e.message };
   }
 };

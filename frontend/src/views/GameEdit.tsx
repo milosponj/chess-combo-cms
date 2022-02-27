@@ -30,7 +30,7 @@ export const GameEdit = () => {
       await updateGame(id, gameData);
       history.push("/games");
     } catch (e) {
-      console.log(e);
+      console.error(e);
       dispatch(
         setNotification({
           status: "error",
