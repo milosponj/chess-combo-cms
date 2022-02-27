@@ -18,7 +18,8 @@ const httpTrigger: AzureFunction = async function (
       body: response,
     };
   } catch (e) {
-    context.res = { status: 400, body: e.message };
+    console.error(e)
+    context.res = { status: 500, body: e.message };
   }
 };
 

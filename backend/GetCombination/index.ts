@@ -19,7 +19,7 @@ const httpTrigger: AzureFunction = async function (
       body: response,
     };
   } catch (e) {
-    context.res = { status: e.statusCode === 404 ? 404 : 400, body: e.message };
+    context.res = { status: e.statusCode === 404 ? 404 : 500, body: e.message };
   }
 };
 

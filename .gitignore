@@ -1,3 +1,8 @@
 infra/.terraform/providers/registry.terraform.io/hashicorp/azurerm/2.64.0/windows_amd64/terraform-provider-azurerm_v2.64.0_x5.exe
 node_modules
 dist
+__azurite_db_table__.json
+__azurite_db_queue_extent__.json
+__azurite_db_queue__.json
+__azurite_db_blob_extent__.json
+__azurite_db_blob__.json
