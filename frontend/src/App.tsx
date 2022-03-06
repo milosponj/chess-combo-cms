@@ -29,7 +29,7 @@ const App: React.FC = () => {
           <Route path={`/games/add`} component={GameCreate} />
           <Route path={`/games/:id`} component={GameEdit} />
           <Route path={`/games`} render={() => <Games />} />
-          <Redirect from={`/`} to="/combinations" />
+          <Route path={`/`} render={() => <Combinations />} />
         </Switch>
       </Router>
     </div>
