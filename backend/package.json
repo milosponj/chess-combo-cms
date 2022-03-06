@@ -27,6 +27,8 @@
     "@types/busboy": "^0.3.1",
     "busboy": "^1.0.0",
     "chess.js": "^0.12.0",
-    "fen-validator": "^1.4.1"
+    "fen-validator": "^1.4.1",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^2.0.5"
   }
 }

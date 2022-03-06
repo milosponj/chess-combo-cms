@@ -4,11 +4,19 @@ import { v4 as uuid } from "uuid";
 import { toPlayerEntry } from "../utils";
 import { addAvatar, addPlayer } from "../services/playerService";
 import parseMultipartFormData from "@anzp/azure-function-multipart";
+import { getAuthResult } from "../services/auth";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
 ): Promise<void> {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  const authResult = await getAuthResult(token)
+  if (!authResult.email) {
+    context.res = { status: 401, body: authResult.error };
+  }
+
   try {
     const { fields, files } = await parseMultipartFormData(req);
     const file = files.find((file) => file.fieldname === "avatar");
