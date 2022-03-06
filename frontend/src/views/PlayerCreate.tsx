@@ -7,14 +7,16 @@ import { Player } from "../interfaces";
 import { addPlayer } from "../services/api";
 import { useHistory } from "react-router";
 import { setNotification, useStateValue } from "../state";
+import { useAccessToken } from "../hooks/useAccessToken";
 
 export const PlayerCreate = () => {
   const history = useHistory();
   const [, dispatch] = useStateValue();
+  const { accessToken } = useAccessToken()
 
   const addNewPlayer = async (playerData: FormData) => {
     try {
-      await addPlayer(playerData);
+      await addPlayer(playerData, accessToken);
       history.push("/players");
     } catch (e) {
       console.log(e);

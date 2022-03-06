@@ -158,7 +158,6 @@ interface MobileProps extends FlexProps {
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
-  console.log(user, isAuthenticated)
   if (!isAuthenticated) {
     return (
       <Flex justify="right">

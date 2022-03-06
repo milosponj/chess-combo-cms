@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect,
 } from "react-router-dom";
 import { CombinationCreate } from "./views/CombinationCreate";
 import { CombinationEdit } from "./views/CombinationEdit";

@@ -22,7 +22,7 @@ export const getCombos = () => {
 };
 
 export const addCombo = (newObject: CombinationEntry) => {
-  const request = axios.post(`${apiBaseUrl}/combinations/`, newObject);
+  const request = axios.post(`${process.env.REACT_APP_API_BASE_URL}/combinations/`, newObject);
   return request.then((response) => response.data);
 };
 
@@ -48,12 +48,13 @@ export const getPlayers = () => {
   return request.then((response) => response.data);
 };
 
-export const addPlayer = (form: FormData) => {
+export const addPlayer = (form: FormData, accessToken?: string) => {
+  console.log(accessToken)
   const request = axios({
     method: "post",
     url: `${process.env.REACT_APP_API_BASE_URL}/players`,
     data: form,
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${accessToken}` },
   });
 
   return request.then((response) => response.data);
